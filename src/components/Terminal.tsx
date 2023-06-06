@@ -7,6 +7,8 @@ import { useClickOutsideEvent } from "../hooks/terminal";
 import Controls from "./Controls";
 import Editor from "./Editor";
 
+type TerminalMessage = string | React.ReactNode | Function;
+
 type TerminalProps = {
   enableInput?: boolean,
   caret?: boolean,
@@ -15,10 +17,10 @@ type TerminalProps = {
   showControlButtons?: boolean,
   controlButtonLabels?: string[],
   prompt?: string,
-  commands?: any,
-  welcomeMessage?: string | React.ReactNode | Function,
-  errorMessage?: string | React.ReactNode | Function,
-  defaultHandler?: any,
+  commands?: Record<string, TerminalMessage>,
+  welcomeMessage?: TerminalMessage,
+  errorMessage?: TerminalMessage,
+  defaultHandler?: (command: string, commandArguments: string) => TerminalMessage,
 }
 
 export default function Terminal(props: TerminalProps) {
@@ -58,7 +60,7 @@ export default function Terminal(props: TerminalProps) {
     errorMessage={errorMessage}
     enableInput={enableInput}
     showControlBar={showControlBar}
-    defaultHandler={defaultHandler}
+    defaultHandler={(defaultHandler)}
   />
 
   return (
