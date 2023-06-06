@@ -1,6 +1,5 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { isMobile } from "react-device-detect";
 
 import { StyleContext } from "../contexts/StyleContext";
 import { ThemeContext } from "../contexts/ThemeContext";
@@ -11,7 +10,7 @@ import Editor from "./Editor";
 
 export default function Terminal(props: any) {
   const wrapperRef = React.useRef(null);
-  const [consoleFocused, setConsoleFocused] = React.useState(!isMobile);
+  const [consoleFocused, setConsoleFocused] = React.useState(true);
   const style = React.useContext(StyleContext);
   const themeStyles = React.useContext(ThemeContext);
 
@@ -32,22 +31,27 @@ export default function Terminal(props: any) {
     defaultHandler
   } = props;
 
-  const controls = showControlBar ? <Controls
-    consoleFocused={consoleFocused}
-    showControlButtons={showControlButtons}
-    controlButtonLabels={controlButtonLabels}/> : null;
+  const controls = showControlBar ? (
+    <Controls
+      consoleFocused={consoleFocused}
+      showControlButtons={showControlButtons}
+      controlButtonLabels={controlButtonLabels}
+    />
+  ) : null;
 
-  const editor = <Editor
-    caret={caret}
-    consoleFocused={consoleFocused}
-    prompt={prompt}
-    commands={commands}
-    welcomeMessage={welcomeMessage}
-    errorMessage={errorMessage}
-    enableInput={enableInput}
-    showControlBar={showControlBar}
-    defaultHandler={defaultHandler}
-  />
+  const editor = (
+    <Editor
+      caret={caret}
+      consoleFocused={consoleFocused}
+      prompt={prompt}
+      commands={commands}
+      welcomeMessage={welcomeMessage}
+      errorMessage={errorMessage}
+      enableInput={enableInput}
+      showControlBar={showControlBar}
+      defaultHandler={defaultHandler}
+    />
+  );
 
   return (
     <div
@@ -65,7 +69,7 @@ export default function Terminal(props: any) {
 }
 
 Terminal.propTypes = {
-  enableInput:PropTypes.bool,
+  enableInput: PropTypes.bool,
   caret: PropTypes.bool,
   theme: PropTypes.string,
   showControlBar: PropTypes.bool,
