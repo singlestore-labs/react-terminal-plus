@@ -54,7 +54,7 @@ export const useEditorInput = (
     const [command, ...rest] = store.editorInput.trim().split(" ");
     let output = "";
 
-    if (command === "clear") {
+    if (command === "clear" || command === "cls") {
       send({ type: "CLEAR" });
       return;
     }
