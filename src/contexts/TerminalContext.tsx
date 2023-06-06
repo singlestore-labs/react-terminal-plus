@@ -187,6 +187,8 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
     case "RESET_CARET_POSITION": {
       return {
         ...state,
+        textBeforeCaret: "",
+        textAfterCaret: "",
         caretPosition: 0,
       };
     }

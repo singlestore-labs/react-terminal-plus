@@ -1,10 +1,9 @@
 import React from "react";
-import { render, screen, fireEvent, getByTestId } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { act } from "react-dom/test-utils";
 import { ReactTerminal, TerminalContextProvider } from "../../../src";
 import "@testing-library/jest-dom"
-import * as reactDeviceDetect from "react-device-detect";
 
 describe("ReactTerminal", () => {
   test("renders ReactTerminal component", () => {
@@ -200,7 +199,7 @@ describe("ReactTerminal", () => {
 
     const terminalContainer = screen.getByTestId("terminal")
     await act(async () => {
-      writeText(terminalContainer, "v", true);
+      writeText(terminalContainer, "v", true, true);
     });
     writeText(terminalContainer, "Enter");
     expect(terminalContainer.textContent).toContain("jackharper");
@@ -299,10 +298,11 @@ describe("ReactTerminal", () => {
   });
 });
 
-function writeText(container: any, value: string, metaKey = false) {
+function writeText(container: any, value: string, metaKey = false, shiftKey = false) {
   if (["Enter", "Backspace", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Tab"].includes(value)) {
     fireEvent.keyDown(container, {
       metaKey: metaKey,
+      shiftKey: shiftKey,
       key: value
     });
     return;
@@ -311,6 +311,7 @@ function writeText(container: any, value: string, metaKey = false) {
   value.split("").forEach(char => {
     fireEvent.keyDown(container, {
       metaKey: metaKey,
+      shiftKey: shiftKey,
       key: char
     });
   })

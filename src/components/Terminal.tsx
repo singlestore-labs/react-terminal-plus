@@ -1,5 +1,4 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 
 import { StyleContext } from "../contexts/StyleContext";
 import { ThemeContext } from "../contexts/ThemeContext";
@@ -8,7 +7,21 @@ import { useClickOutsideEvent } from "../hooks/terminal";
 import Controls from "./Controls";
 import Editor from "./Editor";
 
-export default function Terminal(props: any) {
+type TerminalProps = {
+  enableInput?: boolean,
+  caret?: boolean,
+  theme?: string,
+  showControlBar?: boolean,
+  showControlButtons?: boolean,
+  controlButtonLabels?: string[],
+  prompt?: string,
+  commands?: any,
+  welcomeMessage?: string | React.ReactNode | Function,
+  errorMessage?: string | React.ReactNode | Function,
+  defaultHandler?: any,
+}
+
+export default function Terminal(props: TerminalProps) {
   const wrapperRef = React.useRef(null);
   const [consoleFocused, setConsoleFocused] = React.useState(true);
   const style = React.useContext(StyleContext);
@@ -18,17 +31,17 @@ export default function Terminal(props: any) {
 
   // Get all props destructively
   const {
-    caret,
-    theme,
-    showControlBar,
-    showControlButtons,
-    controlButtonLabels,
-    prompt,
-    commands,
-    welcomeMessage,
-    errorMessage,
-    enableInput,
-    defaultHandler
+    caret = true,
+    theme = "light",
+    showControlBar = true,
+    showControlButtons = true,
+    controlButtonLabels = ["close", "minimize", "maximize"],
+    prompt = ">>>",
+    commands = {},
+    welcomeMessage = "",
+    errorMessage = "not found!",
+    enableInput = true,
+    defaultHandler = null,
   } = props;
 
   const controls = showControlBar ? <Controls
@@ -62,35 +75,3 @@ export default function Terminal(props: any) {
     </div>
   );
 }
-
-Terminal.propTypes = {
-  enableInput: PropTypes.bool,
-  caret: PropTypes.bool,
-  theme: PropTypes.string,
-  showControlBar: PropTypes.bool,
-  showControlButtons: PropTypes.bool,
-  controlButtonLabels: PropTypes.arrayOf(PropTypes.string),
-  prompt: PropTypes.string,
-  commands: PropTypes.objectOf(PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.func,
-    PropTypes.node
-  ])),
-  welcomeMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.node]),
-  errorMessage: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.node]),
-  defaultHandler: PropTypes.func,
-};
-
-Terminal.defaultProps = {
-  enableInput: true,
-  caret: true,
-  theme: "light",
-  showControlBar: true,
-  showControlButtons: true,
-  controlButtonLabels: ["close", "minimize", "maximize"],
-  prompt: ">>>",
-  commands: {},
-  welcomeMessage: "",
-  errorMessage: "not found!",
-  defaultHandler: null,
-};
