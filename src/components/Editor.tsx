@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { StyleContext } from "../contexts/StyleContext";
 import { ThemeContext } from "../contexts/ThemeContext";
-import { TerminalContext } from "../contexts/TerminalContext";
+import { useTerminal } from "../contexts/TerminalContext";
 import {
   useCurrentLine,
   useScrollToBottom,
@@ -12,9 +12,9 @@ export default function Editor(props: any) {
   const wrapperRef = React.useRef(null);
   const style = React.useContext(StyleContext);
   const themeStyles = React.useContext(ThemeContext);
-  const { bufferedContent } = React.useContext(TerminalContext);
+  const { store } = useTerminal();
 
-  useScrollToBottom(bufferedContent, wrapperRef);
+  useScrollToBottom(store.bufferedContent, wrapperRef);
 
   const {
     enableInput,
@@ -36,13 +36,12 @@ export default function Editor(props: any) {
     errorMessage,
     enableInput,
     defaultHandler,
-    wrapperRef
   );
 
   return (
-    <div id={"terminalEditor"} ref={wrapperRef} className={`${style.editor} ${!showControlBar ? style.curvedTop : null} ${showControlBar ? style.editorWithTopBar : null}`} style={{ background: themeStyles.themeBGColor }}>
+    <div id="terminalEditor" ref={wrapperRef} className={`${style.editor} ${!showControlBar ? style.curvedTop : null} ${showControlBar ? style.editorWithTopBar : null}`} style={{ background: themeStyles.themeBGColor }}>
       {welcomeMessage}
-      {bufferedContent}
+      {store.bufferedContent}
       {currentLine}
     </div>
   );

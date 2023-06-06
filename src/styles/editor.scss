@@ -5,17 +5,11 @@
   overflow-wrap: break-word;
   overflow-y: scroll;
   outline: none;
-  font-family: "Source Code Pro", monospace;
+  font-family: 'Source Code Pro', monospace;
   font-size: 18px;
   line-height: 22px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-
-  .mobileInput {
-    position: absolute;
-    top: -2000px;
-    left: -2000px;
-  }
 
   .lineText {
     display: inline;
@@ -30,14 +24,14 @@
 
   .caret {
     position: relative;
-    -webkit-animation: blink 0.75s ease-in-out infinite;
-    -moz-animation: blink 0.75s ease-in-out infinite;
-    -o-animation: blink 0.75s ease-in-out infinite;
-    -ms-animation: blink 0.75s ease-in-out infinite;
-    animation: blink 0.75s ease-in-out infinite;
+    // -webkit-animation: blink 0.75s ease-in-out infinite;
+    // -moz-animation: blink 0.75s ease-in-out infinite;
+    // -o-animation: blink 0.75s ease-in-out infinite;
+    // -ms-animation: blink 0.75s ease-in-out infinite;
+    // animation: blink 0.75s ease-in-out infinite;
 
     .caretAfter {
-      content: "";
+      content: '';
       position: absolute;
       top: 2px;
       width: 10px;
@@ -48,7 +42,7 @@
     @-moz-keyframes blink {
       0% {
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
       }
       100% {
@@ -60,7 +54,7 @@
     @-webkit-keyframes blink {
       0% {
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
       }
       100% {
@@ -72,7 +66,7 @@
     @-o-keyframes blink {
       0% {
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
       }
       100% {
@@ -84,7 +78,7 @@
     @keyframes blink {
       0% {
         opacity: 0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)';
         filter: alpha(opacity=0);
       }
       100% {

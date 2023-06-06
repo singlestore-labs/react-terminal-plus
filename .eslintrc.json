@@ -4,7 +4,7 @@
     "es6": true,
     "jest": true
   },
-  "extends": ["plugin:react/recommended", "airbnb"],
+  "extends": ["plugin:react/recommended", "plugin:react-hooks/recommended"],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
@@ -26,28 +26,16 @@
       }
     ],
     "react/jsx-props-no-spreading": "off",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
-      {
-        "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
-      }
-    ],
-    "import/no-unresolved": [
-      "error",
-      {
-        "ignore": ["react", "react-dom"]
-      }
-    ],
     "jsx-a11y/aria-role": "off",
     "jsx-a11y/no-static-element-interactions": "off",
     "quotes": [2, "double", { "avoidEscape": true }],
     "comma-dangle": "off",
     "indent": "off",
-    "react/jsx-indent": "off"
+    "react/jsx-indent": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "curly": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }]
   },
   "settings": {
     "import/resolver": {

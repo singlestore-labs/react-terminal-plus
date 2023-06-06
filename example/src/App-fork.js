@@ -1,11 +1,10 @@
 import * as React from 'react';
 import './App.css';
-import { TerminalContextProvider } from 'react-terminal';
-import { ReactTerminal } from 'react-terminal';
-import { AppFork } from './App-fork';
+import { TerminalContextProvider } from 'react-terminal-fork';
+import { ReactTerminal } from 'react-terminal-fork';
 
-const App = () => {
-  const [theme, setTheme] = React.useState('light');
+export const AppFork = () => {
+  const [theme, setTheme] = React.useState('dark');
   const [controlBar, setControlBar] = React.useState(true);
   const [controlButtons, setControlButtons] = React.useState(true);
   const [prompt, setPrompt] = React.useState('>>>');
@@ -86,9 +85,6 @@ const App = () => {
           }}
         />
       </TerminalContextProvider>
-      <AppFork />
     </div>
   );
 };
-
-export default App;
