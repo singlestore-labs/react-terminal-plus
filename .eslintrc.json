@@ -34,7 +34,8 @@
     "react/jsx-indent": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": ["error"],
-    "curly": "error"
+    "curly": "error",
+    "no-multiple-empty-lines": ["error", { "max": 1 }]
   },
   "settings": {
     "import/resolver": {

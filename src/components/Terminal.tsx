@@ -31,27 +31,22 @@ export default function Terminal(props: any) {
     defaultHandler
   } = props;
 
-  const controls = showControlBar ? (
-    <Controls
-      consoleFocused={consoleFocused}
-      showControlButtons={showControlButtons}
-      controlButtonLabels={controlButtonLabels}
-    />
-  ) : null;
+  const controls = showControlBar ? <Controls
+    consoleFocused={consoleFocused}
+    showControlButtons={showControlButtons}
+    controlButtonLabels={controlButtonLabels} /> : null;
 
-  const editor = (
-    <Editor
-      caret={caret}
-      consoleFocused={consoleFocused}
-      prompt={prompt}
-      commands={commands}
-      welcomeMessage={welcomeMessage}
-      errorMessage={errorMessage}
-      enableInput={enableInput}
-      showControlBar={showControlBar}
-      defaultHandler={defaultHandler}
-    />
-  );
+  const editor = <Editor
+    caret={caret}
+    consoleFocused={consoleFocused}
+    prompt={prompt}
+    commands={commands}
+    welcomeMessage={welcomeMessage}
+    errorMessage={errorMessage}
+    enableInput={enableInput}
+    showControlBar={showControlBar}
+    defaultHandler={defaultHandler}
+  />
 
   return (
     <div

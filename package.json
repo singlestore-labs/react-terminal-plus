@@ -102,7 +102,7 @@
     "collectCoverage": true
   },
   "dependencies": {
-    "prop-types": "^15.7.2",
-    "react-device-detect": "2.1.2"
+    "cancelable-promise": "^4.3.1",
+    "prop-types": "^15.7.2"
   }
 }

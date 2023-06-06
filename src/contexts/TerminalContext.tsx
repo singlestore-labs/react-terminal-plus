@@ -17,10 +17,11 @@ type TerminalState = {
 
 type TerminalActions =
   { type: "CLEAR" }
+  | { type: "CANCEL", cancelNode: React.ReactNode }
   | { type: "SUBMIT", loaderNode: React.ReactNode, command: string }
   | { type: "SUBMIT_SUCCESS", successNode: React.ReactNode }
   | { type: "TYPE", text: string }
-  | { type: "DELETE", text: string }
+  | { type: "DELETE" }
   | { type: "COPY" }
   | { type: "PASTE", text: string }
   | { type: "ARROW_UP", previousCommand: string }
@@ -45,6 +46,17 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
       return {
         ...state,
         bufferedContent: null,
+        editorInput: "",
+        currentLineStatus: "idle",
+        caretPosition: 0,
+        textBeforeCaret: "",
+        textAfterCaret: "",
+      };
+    }
+    case "CANCEL": {
+      return {
+        ...state,
+        bufferedContent: action.cancelNode,
         editorInput: "",
         currentLineStatus: "idle",
         caretPosition: 0,
@@ -208,12 +220,6 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
         textBeforeCaret: newCaretTextBefore,
       };
     }
-    case "UPDATE_BUFFERED_CONTENT": {
-      return {
-        ...state,
-        bufferedContent: action.payload,
-      };
-    }
     default: {
       throw new Error(`Unhandled action type: ${JSON.stringify(action)}`);
     }
@@ -237,8 +243,6 @@ function caretTextAfterUpdate(newEditorInput: string, newCaretPosition: number) 
 
   return [caretTextBefore, caretTextAfter];
 }
-
-
 
 const initialState: TerminalState = {
   bufferedContent: null,

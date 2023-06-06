@@ -3,8 +3,7 @@ import * as React from "react";
 import { StyleContext } from "../contexts/StyleContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useTerminal } from "../contexts/TerminalContext";
-
-import Utils from "../common/Utils";
+import { CancelablePromise } from "cancelable-promise";
 
 export const useEditorInput = (
   {
@@ -13,14 +12,14 @@ export const useEditorInput = (
     commands,
     defaultHandler,
     errorMessage,
-    prompt = "$",
+    prompt
   }: {
     consoleFocused: boolean;
     enableInput: boolean;
     commands: Record<string, string | ((...args: any[]) => any)>;
     defaultHandler?: (...args: any[]) => any;
     errorMessage?: (...args: any[]) => any;
-    prompt?: string;
+    prompt: string;
   }
 ) => {
   const style = React.useContext(StyleContext);
@@ -29,7 +28,29 @@ export const useEditorInput = (
     getPreviousCommand, getNextCommand, store, send
   } = useTerminal();
 
-  const processCommand = React.useCallback(async () => {
+  const runningPromiseRef = React.useRef<CancelablePromise>(null);
+
+  const cancelCommand = React.useCallback(() => {
+    if (runningPromiseRef.current) {
+      runningPromiseRef.current.cancel();
+    }
+
+    const nextBufferedContent = (
+      <>
+        {store.bufferedContent}
+        <span style={{ color: themeStyles.themePromptColor }}>{prompt}</span>
+        <span className={`${style.lineText} ${style.preWhiteSpace}`}>
+          {store.editorInput}
+        </span>
+        <br />
+      </>
+    );
+
+    send({ type: "CANCEL", cancelNode: nextBufferedContent });
+
+  }, [prompt, send, store.bufferedContent, store.editorInput, style.lineText, style.preWhiteSpace, themeStyles.themePromptColor]);
+
+  const runCommand = React.useCallback(async () => {
     const [command, ...rest] = store.editorInput.trim().split(" ");
     let output = "";
 
@@ -55,25 +76,28 @@ export const useEditorInput = (
 
       if (command && commands[command]) {
         const executor = commands[command];
-
         if (typeof executor === "function") {
-          output = await executor(commandArguments);
+          runningPromiseRef.current = new CancelablePromise((resolve) => {
+            resolve(executor(commandArguments))
+          });
+          output = await runningPromiseRef.current;
         } else {
           output = executor;
         }
       } else if (typeof defaultHandler === "function") {
-        output = await defaultHandler(command, commandArguments);
+        runningPromiseRef.current = new CancelablePromise((resolve) => {
+          resolve(defaultHandler(command, commandArguments))
+        });
+        output = await runningPromiseRef.current;
       } else if (typeof errorMessage === "function") {
-        output = await errorMessage(command, commandArguments);
+        runningPromiseRef.current = new CancelablePromise((resolve) => {
+          resolve(errorMessage(command, commandArguments))
+        });
+        output = await runningPromiseRef.current
       } else {
         output = errorMessage;
       }
     }
-
-    // if is a promise
-    // clearTimeout
-    // if is arbitrary code
-    // return;
 
     const nextBufferedContent = (
       <>
@@ -109,7 +133,7 @@ export const useEditorInput = (
     const eventKey = event.key;
 
     if (eventKey === "Enter") {
-      processCommand();
+      runCommand();
       return;
     }
 
@@ -117,7 +141,7 @@ export const useEditorInput = (
 
     if (eventKey === "Backspace") {
       if (store.editorInput && store.editorInput.length !== 0) {
-        send({ type: "DELETE", text: nextInput });
+        send({ type: "DELETE" });
       }
     } else if (eventKey === "ArrowUp") {
       nextInput = getPreviousCommand();
@@ -141,6 +165,12 @@ export const useEditorInput = (
       nextInput = store.editorInput;
     } else if (
       (event.metaKey || event.ctrlKey)
+      && eventKey.toLowerCase() === "l"
+    ) {
+      send({ type: "CLEAR" })
+    } else if (
+      (event.metaKey || event.ctrlKey)
+      && event.shiftKey
       && eventKey.toLowerCase() === "v"
     ) {
       navigator.clipboard.readText().then((pastedText) => {
@@ -148,19 +178,27 @@ export const useEditorInput = (
       });
     } else if (
       (event.metaKey || event.ctrlKey)
+      && event.shiftKey
       && eventKey.toLowerCase() === "c"
     ) {
       const selectedText = window.getSelection().toString();
       navigator.clipboard.writeText(selectedText).then(() => {
         send({ type: "COPY" });
       });
+    } else if (
+      (event.metaKey || event.ctrlKey)
+      && eventKey.toLowerCase() === "c"
+    ) {
+      if (runningPromiseRef.current) {
+        runningPromiseRef.current.cancel();
+      }
+      cancelCommand()
     } else {
       if (eventKey && eventKey.length === 1) {
         send({ type: "TYPE", text: eventKey })
       }
     }
-  }, [consoleFocused, enableInput, getNextCommand, getPreviousCommand, processCommand,
-    send, store.caretPosition, store.editorInput]);
+  }, [cancelCommand, consoleFocused, enableInput, getNextCommand, getPreviousCommand, runCommand, send, store.caretPosition, store.editorInput]);
 
   React.useEffect(() => {
     // Bind the event listener
@@ -184,9 +222,6 @@ export const useCurrentLine = (
   const style = React.useContext(StyleContext);
   const themeStyles = React.useContext(ThemeContext);
   const { store } = useTerminal();
-
-  console.log(store)
-
 
   const currentLine = store.currentLineStatus !== "processing" ? (
     <>
