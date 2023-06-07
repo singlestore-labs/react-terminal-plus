@@ -1,7 +1,7 @@
 {
-  "name": "react-terminal-fork",
+  "name": "react-terminal-plus",
   "version": "0.0.1",
-  "description": "React component that renders a terminal",
+  "description": "A fork of the the 'react-terminal' package, with some extra features - react-terminal-plus",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
@@ -18,7 +18,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bony2023/react-terminal.git"
+    "url": "git@gitlab.com:singlestore/engineering/react-terminal-fork.git"
   },
   "keywords": [
     "node",
@@ -72,8 +72,8 @@
     "cheerio": "1.0.0-rc.10"
   },
   "peerDependencies": {
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "jest": {
     "testEnvironment": "jsdom",
