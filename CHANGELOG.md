@@ -18,3 +18,15 @@
 - Refactored the code to rely on a `reducer` architecture instead of `useState + useEffect`
 
 https://docs.gitlab.com/ee/development/changelog.html
+
+## 0.0.2 (7th June 2023)
+
+---
+
+### Internal
+
+- Add tooling for changelogs and releasing
+
+## 0.0.3 (8th June 2023)
+
+---
