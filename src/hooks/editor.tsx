@@ -35,7 +35,7 @@ export const useEditorInput = (
       runningPromiseRef.current.cancel();
     }
 
-    const nextBufferedContent = (
+    let nextBufferedContent = (
       <>
         {store.bufferedContent}
         <span style={{ color: themeStyles.themePromptColor }}>{prompt}</span>
@@ -46,16 +46,24 @@ export const useEditorInput = (
       </>
     );
 
+    if (store.currentLineStatus === "processing") {
+      nextBufferedContent = (
+        <>
+          {store.bufferedContent}
+        </>
+      );
+    }
+
     send({ type: "CANCEL", cancelNode: nextBufferedContent });
 
-  }, [prompt, send, store.bufferedContent, store.editorInput, style.lineText, style.preWhiteSpace, themeStyles.themePromptColor]);
+  }, [prompt, send, store.bufferedContent, store.currentLineStatus, store.editorInput, style.lineText, style.preWhiteSpace, themeStyles.themePromptColor]);
 
   const runCommand = React.useCallback(async () => {
     const [command, ...rest] = store.editorInput.trim().split(" ");
     let output = "";
 
     if (command === "clear" || command === "cls") {
-      send({ type: "CLEAR" });
+      send({ type: "CLEAR_BY_COMMAND" });
       return;
     }
 
@@ -131,15 +139,13 @@ export const useEditorInput = (
     event.preventDefault();
 
     const eventKey = event.key;
-
-    if (eventKey === "Enter") {
-      runCommand();
-      return;
-    }
-
     let nextInput = null;
 
-    if (eventKey === "Backspace") {
+    if (eventKey === "Enter") {
+      if (store.currentLineStatus !== "processing") {
+        runCommand();
+      }
+    } else if (eventKey === "Backspace") {
       if (store.editorInput && store.editorInput.length !== 0) {
         send({ type: "DELETE" });
       }

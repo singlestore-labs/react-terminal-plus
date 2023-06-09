@@ -12,9 +12,27 @@
 
 - Shortcut to copy is now `ctrl + shift + c` instead of `ctrl + c`
 - Shortcut to paste is now `ctrl + shift + v` instead of `ctrl + v`
+- The terminal cursor no longer blinks
 
 ### Internal
 
 - Refactored the code to rely on a `reducer` architecture instead of `useState + useEffect`
 
 https://docs.gitlab.com/ee/development/changelog.html
+
+## 0.0.2 (7th June 2023)
+
+---
+
+### Internal
+
+- Add tooling for changelogs and releasing
+
+## 0.0.3 (9th June 2023)
+
+---
+
+### Fixes
+
+- Don't allow any commands to be executed while another command is running
+- Fix a small UI bug when doing `ctrl + c` with text in the buffer

@@ -17,6 +17,7 @@ type TerminalState = {
 
 type TerminalActions =
   { type: "CLEAR" }
+  | { type: "CLEAR_BY_COMMAND" }
   | { type: "CANCEL", cancelNode: React.ReactNode }
   | { type: "SUBMIT", loaderNode: React.ReactNode, command: string }
   | { type: "SUBMIT_SUCCESS", successNode: React.ReactNode }
@@ -41,191 +42,225 @@ type TerminalContextState = {
 const TerminalContext = React.createContext<TerminalContextState>(null);
 
 function terminalReducer(state: TerminalState, action: TerminalActions): TerminalState {
-  switch (action.type) {
-    case "CLEAR": {
-      return {
-        ...state,
-        bufferedContent: null,
-        editorInput: "",
-        currentLineStatus: "idle",
-        caretPosition: 0,
-        textBeforeCaret: "",
-        textAfterCaret: "",
-      };
+  switch (state.currentLineStatus) {
+    case "processing": {
+      switch (action.type) {
+        case "CANCEL": {
+          return {
+            ...state,
+            bufferedContent: action.cancelNode,
+            editorInput: "",
+            currentLineStatus: "idle",
+            caretPosition: 0,
+            textBeforeCaret: "",
+            textAfterCaret: "",
+          };
+        }
+        case "SUBMIT_SUCCESS": {
+          return {
+            ...state,
+            bufferedContent: action.successNode,
+            currentLineStatus: "success",
+            editorInput: "",
+            caretPosition: 0,
+            textBeforeCaret: "",
+            textAfterCaret: "",
+          };
+        }
+        default: {
+          return state;
+        }
+      }
     }
-    case "CANCEL": {
-      return {
-        ...state,
-        bufferedContent: action.cancelNode,
-        editorInput: "",
-        currentLineStatus: "idle",
-        caretPosition: 0,
-        textBeforeCaret: "",
-        textAfterCaret: "",
-      };
-    }
-    case "SUBMIT": {
-      const { command } = action;
-      const newCommands = command ? [...state.commandsHistory, command] : state.commandsHistory;
+    case "success":
+    case "error":
+    case "idle": {
+      switch (action.type) {
+        case "CLEAR_BY_COMMAND": {
+          return {
+            ...state,
+            bufferedContent: null,
+            editorInput: "",
+            currentLineStatus: "idle",
+            caretPosition: 0,
+            textBeforeCaret: "",
+            textAfterCaret: "",
+          };
+        }
+        case "CLEAR": {
+          return {
+            ...state,
+            bufferedContent: null,
+          };
+        }
+        case "CANCEL": {
+          return {
+            ...state,
+            bufferedContent: action.cancelNode,
+            editorInput: "",
+            currentLineStatus: "idle",
+            caretPosition: 0,
+            textBeforeCaret: "",
+            textAfterCaret: "",
+          };
+        }
+        case "SUBMIT": {
+          const { command } = action;
+          const newCommands = command ? [...state.commandsHistory, command] : state.commandsHistory;
 
-      return {
-        ...state,
-        commandsHistory: newCommands,
-        bufferedContent: action.loaderNode,
-        currentLineStatus: "processing",
-        editorInput: "",
-        caretPosition: 0,
-        textBeforeCaret: "",
-        textAfterCaret: "",
-      };
-    }
-    case "SUBMIT_SUCCESS": {
-      return {
-        ...state,
-        bufferedContent: action.successNode,
-        currentLineStatus: "success",
-        editorInput: "",
-        caretPosition: 0,
-        textBeforeCaret: "",
-        textAfterCaret: "",
-      };
-    }
-    case "TYPE": {
-      const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
+          return {
+            ...state,
+            commandsHistory: newCommands,
+            bufferedContent: action.loaderNode,
+            currentLineStatus: "processing",
+            editorInput: "",
+            caretPosition: 0,
+            textBeforeCaret: "",
+            textAfterCaret: "",
+          };
+        }
+        case "TYPE": {
+          const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
 
-      const newEditorInput = oldCaretTextBefore + action.text + oldCaretTextAfter;
-      const newCaretPosition = state.caretPosition + 1;
+          const newEditorInput = oldCaretTextBefore + action.text + oldCaretTextAfter;
+          const newCaretPosition = state.caretPosition + 1;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        newEditorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            newEditorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        caretPosition: newCaretPosition,
-        editorInput: newEditorInput,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
-    }
-    case "DELETE": {
-      const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
+          return {
+            ...state,
+            caretPosition: newCaretPosition,
+            editorInput: newEditorInput,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        case "DELETE": {
+          const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
 
-      const newEditorInput = oldCaretTextBefore.slice(0, -1) + oldCaretTextAfter;
-      const newCaretPosition = state.caretPosition - 1;
+          const newEditorInput = oldCaretTextBefore.slice(0, -1) + oldCaretTextAfter;
+          const newCaretPosition = state.caretPosition - 1;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        newEditorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            newEditorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        editorInput: newEditorInput,
-        caretPosition: newCaretPosition,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
-    }
-    case "COPY": {
-      return state;
-    }
-    case "PASTE": {
-      const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
+          return {
+            ...state,
+            editorInput: newEditorInput,
+            caretPosition: newCaretPosition,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        case "COPY": {
+          return state;
+        }
+        case "PASTE": {
+          const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
 
-      const newEditorInput = oldCaretTextBefore + action.text + oldCaretTextAfter;
-      const newCaretPosition = state.caretPosition + action.text.length;
+          const newEditorInput = oldCaretTextBefore + action.text + oldCaretTextAfter;
+          const newCaretPosition = state.caretPosition + action.text.length;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        newEditorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            newEditorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        editorInput: newEditorInput,
-        caretPosition: newCaretPosition,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
-    }
-    case "ARROW_UP": {
-      const newEditorInput = action.previousCommand;
-      const newCaretPosition = action.previousCommand.length;
+          return {
+            ...state,
+            editorInput: newEditorInput,
+            caretPosition: newCaretPosition,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        case "ARROW_UP": {
+          const newEditorInput = action.previousCommand;
+          const newCaretPosition = action.previousCommand.length;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        newEditorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            newEditorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        editorInput: newEditorInput,
-        caretPosition: newCaretPosition,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
-    }
-    case "ARROW_DOWN": {
-      const newEditorInput = action.nextCommand;
-      const newCaretPosition = action.nextCommand.length;
+          return {
+            ...state,
+            editorInput: newEditorInput,
+            caretPosition: newCaretPosition,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        case "ARROW_DOWN": {
+          const newEditorInput = action.nextCommand;
+          const newCaretPosition = action.nextCommand.length;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        newEditorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            newEditorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        editorInput: newEditorInput,
-        caretPosition: newCaretPosition,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
-    }
-    case "RESET_CARET_POSITION": {
-      return {
-        ...state,
-        textBeforeCaret: "",
-        textAfterCaret: "",
-        caretPosition: 0,
-      };
-    }
-    case "ARROW_LEFT": {
-      const newCaretPosition = state.caretPosition - 1;
+          return {
+            ...state,
+            editorInput: newEditorInput,
+            caretPosition: newCaretPosition,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        case "RESET_CARET_POSITION": {
+          return {
+            ...state,
+            textBeforeCaret: "",
+            textAfterCaret: "",
+            caretPosition: 0,
+          };
+        }
+        case "ARROW_LEFT": {
+          const newCaretPosition = state.caretPosition - 1;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        state.editorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            state.editorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        caretPosition: newCaretPosition,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
-    }
-    case "ARROW_RIGHT": {
-      const newCaretPosition = state.caretPosition + 1;
+          return {
+            ...state,
+            caretPosition: newCaretPosition,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        case "ARROW_RIGHT": {
+          const newCaretPosition = state.caretPosition + 1;
 
-      const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
-        state.editorInput,
-        newCaretPosition
-      );
+          const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
+            state.editorInput,
+            newCaretPosition
+          );
 
-      return {
-        ...state,
-        caretPosition: newCaretPosition,
-        textAfterCaret: newCaretTextAfter,
-        textBeforeCaret: newCaretTextBefore,
-      };
+          return {
+            ...state,
+            caretPosition: newCaretPosition,
+            textAfterCaret: newCaretTextAfter,
+            textBeforeCaret: newCaretTextBefore,
+          };
+        }
+        default: {
+          throw new Error(`Unhandled action type: ${JSON.stringify(action)}`);
+        }
+      }
     }
     default: {
-      throw new Error(`Unhandled action type: ${JSON.stringify(action)}`);
+      return state;
     }
   }
+
 }
 
 function caretTextBeforeUpdate(state: TerminalState) {

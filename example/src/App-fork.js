@@ -70,6 +70,11 @@ export const AppFork = () => {
     </span>
   );
 
+  const defaultHandler = () =>
+    new Promise((resolve) => {
+      setTimeout(() => resolve('hello'), 5000);
+    });
+
   return (
     <div className="App">
       <TerminalContextProvider>
@@ -80,9 +85,7 @@ export const AppFork = () => {
           showControlButtons={controlButtons}
           welcomeMessage={welcomeMessage}
           commands={commands}
-          defaultHandler={(command, commandArguments) => {
-            return `${command} passed on to default handler with arguments ${commandArguments}`;
-          }}
+          defaultHandler={defaultHandler}
         />
       </TerminalContextProvider>
     </div>
