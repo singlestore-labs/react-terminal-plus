@@ -4,6 +4,7 @@ import { StyleContext } from "../contexts/StyleContext";
 import { ThemeContext } from "../contexts/ThemeContext";
 import { useTerminal } from "../contexts/TerminalContext";
 import { CancelablePromise } from "cancelable-promise";
+import { isClearCommand } from "../common/Commands";
 
 export const useEditorInput = (
   {
@@ -59,13 +60,9 @@ export const useEditorInput = (
   }, [prompt, send, store.bufferedContent, store.currentLineStatus, store.editorInput, style.lineText, style.preWhiteSpace, themeStyles.themePromptColor]);
 
   const runCommand = React.useCallback(async () => {
-    const [command, ...rest] = store.editorInput.trim().split(" ");
+    const [commandWithoutArgs, ...rest] = store.editorInput.trim().split(" ");
+    const fullCommand = store.editorInput.trim();
     let output = "";
-
-    if (command === "clear" || command === "cls") {
-      send({ type: "CLEAR_BY_COMMAND" });
-      return;
-    }
 
     const waiting = (
       <>
@@ -77,13 +74,16 @@ export const useEditorInput = (
         <br />
       </>
     );
-    send({ type: "SUBMIT", loaderNode: waiting, command });
+    send({ type: "SUBMIT", loaderNode: waiting, command: fullCommand });
+    if (isClearCommand(fullCommand)) {
+      return;
+    }
 
     if (store.editorInput) {
       const commandArguments = rest.join(" ");
 
-      if (command && commands[command]) {
-        const executor = commands[command];
+      if (fullCommand && commands[fullCommand]) {
+        const executor = commands[fullCommand];
         if (typeof executor === "function") {
           runningPromiseRef.current = new CancelablePromise((resolve) => {
             resolve(executor(commandArguments))
@@ -94,12 +94,12 @@ export const useEditorInput = (
         }
       } else if (typeof defaultHandler === "function") {
         runningPromiseRef.current = new CancelablePromise((resolve) => {
-          resolve(defaultHandler(command, commandArguments))
+          resolve(defaultHandler(commandWithoutArgs, commandArguments))
         });
         output = await runningPromiseRef.current;
       } else if (typeof errorMessage === "function") {
         runningPromiseRef.current = new CancelablePromise((resolve) => {
-          resolve(errorMessage(command, commandArguments))
+          resolve(errorMessage(commandWithoutArgs, commandArguments))
         });
         output = await runningPromiseRef.current
       } else {
@@ -204,7 +204,7 @@ export const useEditorInput = (
         send({ type: "TYPE", text: eventKey })
       }
     }
-  }, [cancelCommand, consoleFocused, enableInput, getNextCommand, getPreviousCommand, runCommand, send, store.caretPosition, store.editorInput]);
+  }, [cancelCommand, consoleFocused, enableInput, getNextCommand, getPreviousCommand, runCommand, send, store.caretPosition, store.currentLineStatus, store.editorInput]);
 
   React.useEffect(() => {
     // Bind the event listener
