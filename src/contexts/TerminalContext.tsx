@@ -1,9 +1,8 @@
 import * as React from "react";
+import { isClearCommand } from "../common/Commands";
 import Utils from "../common/Utils";
 
 type ProcessingStatus = "idle" | "processing" | "success" | "error";
-
-// delete | write | arrowUp | arrowDown | submit | read | clear | copy | paste
 
 type TerminalState = {
   bufferedContent: React.ReactNode;
@@ -17,7 +16,6 @@ type TerminalState = {
 
 type TerminalActions =
   { type: "CLEAR" }
-  | { type: "CLEAR_BY_COMMAND" }
   | { type: "CANCEL", cancelNode: React.ReactNode }
   | { type: "SUBMIT", loaderNode: React.ReactNode, command: string }
   | { type: "SUBMIT_SUCCESS", successNode: React.ReactNode }
@@ -76,17 +74,6 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
     case "error":
     case "idle": {
       switch (action.type) {
-        case "CLEAR_BY_COMMAND": {
-          return {
-            ...state,
-            bufferedContent: null,
-            editorInput: "",
-            currentLineStatus: "idle",
-            caretPosition: 0,
-            textBeforeCaret: "",
-            textAfterCaret: "",
-          };
-        }
         case "CLEAR": {
           return {
             ...state,
@@ -106,7 +93,22 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
         }
         case "SUBMIT": {
           const { command } = action;
-          const newCommands = command ? [...state.commandsHistory, command] : state.commandsHistory;
+          const newCommands = state.commandsHistory;
+          if (command && command !== newCommands[newCommands.length - 1]) {
+            newCommands.push(command);
+          }
+
+          if (isClearCommand(command)) {
+            return {
+              ...state,
+              bufferedContent: null,
+              editorInput: "",
+              currentLineStatus: "idle",
+              caretPosition: 0,
+              textBeforeCaret: "",
+              textAfterCaret: "",
+            };
+          }
 
           return {
             ...state,
@@ -299,7 +301,7 @@ export function TerminalContextProvider(props: any) {
 
   React.useEffect(() => {
     setHistoryPointer(store.commandsHistory.length);
-  }, [store.commandsHistory]);
+  }, [store.commandsHistory.length]);
 
   const contextValue = React.useMemo(() => {
     const getPreviousCommand = () => {
