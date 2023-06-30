@@ -11,6 +11,32 @@
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
 
+  --scroll-bar-thumb-color: transparent;
+  --scroll-bar-track-color: transparent;
+  --scroll-bar-width: 10px;
+
+  &:focus,
+  &:hover {
+    --scroll-bar-thumb-color: rgb(211 211 211 / 40%);
+  }
+
+  // Chrome, Edge, Safari, Opera
+  &::-webkit-scrollbar {
+    width: var(--scroll-bar-width);
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: var(--scroll-bar-track-color);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-bar-thumb-color);
+  }
+
+  // Firefox
+  scrollbar-color: var(--scroll-bar-thumb-color) var(--scroll-bar-track-color);
+  scrollbar-width: var(--scroll-bar-width);
+
   .lineText {
     display: inline;
     position: relative;
