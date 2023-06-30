@@ -1,3 +1,10 @@
+## 0.0.5 (30th June 2023)
+
+### Changed
+
+- The scrollbar styles were changed to be more according to a terminal
+- The scrollbar is only visible when the terminal is focused/hovered
+
 ## 0.0.4 (23rd June 2023)
 
 ### Fixes
