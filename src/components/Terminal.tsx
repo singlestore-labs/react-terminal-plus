@@ -9,7 +9,7 @@ import Editor from "./Editor";
 
 type TerminalMessage = string | React.ReactNode | Function;
 
-type TerminalProps = {
+export type TerminalProps = {
   enableInput?: boolean,
   caret?: boolean,
   theme?: string,

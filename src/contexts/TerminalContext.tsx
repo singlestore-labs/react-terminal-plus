@@ -12,34 +12,37 @@ type TerminalState = {
   textBeforeCaret: string;
   textAfterCaret: string;
   commandsHistory: string[];
-}
+};
 
 type TerminalActions =
-  { type: "CLEAR" }
-  | { type: "CANCEL", cancelNode: React.ReactNode }
-  | { type: "SUBMIT", loaderNode: React.ReactNode, command: string }
-  | { type: "SUBMIT_SUCCESS", successNode: React.ReactNode }
-  | { type: "TYPE", text: string }
+  | { type: "CLEAR" }
+  | { type: "CANCEL"; cancelNode: React.ReactNode }
+  | { type: "SUBMIT"; loaderNode: React.ReactNode; command: string }
+  | { type: "SUBMIT_SUCCESS"; successNode: React.ReactNode }
+  | { type: "TYPE"; text: string }
   | { type: "DELETE" }
   | { type: "COPY" }
-  | { type: "PASTE", text: string }
-  | { type: "ARROW_UP", previousCommand: string }
-  | { type: "ARROW_DOWN", nextCommand: string }
+  | { type: "PASTE"; text: string }
+  | { type: "ARROW_UP"; previousCommand: string }
+  | { type: "ARROW_DOWN"; nextCommand: string }
   | { type: "ARROW_LEFT" }
   | { type: "ARROW_RIGHT" }
   | { type: "RESET_CARET_POSITION" }
-  | { type: "UPDATE_BUFFERED_CONTENT", payload: React.ReactNode }
+  | { type: "UPDATE_BUFFERED_CONTENT"; payload: React.ReactNode };
 
 type TerminalContextState = {
-  send: React.Dispatch<TerminalActions>,
-  store: TerminalState,
-  getPreviousCommand: () => string,
-  getNextCommand: () => string,
-}
+  send: React.Dispatch<TerminalActions>;
+  store: TerminalState;
+  getPreviousCommand: () => string;
+  getNextCommand: () => string;
+};
 
 const TerminalContext = React.createContext<TerminalContextState>(null);
 
-function terminalReducer(state: TerminalState, action: TerminalActions): TerminalState {
+function terminalReducer(
+  state: TerminalState,
+  action: TerminalActions
+): TerminalState {
   switch (state.currentLineStatus) {
     case "processing": {
       switch (action.type) {
@@ -93,7 +96,7 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
         }
         case "SUBMIT": {
           const { command } = action;
-          const newCommands = state.commandsHistory;
+          const newCommands = [...state.commandsHistory];
           if (command && command !== newCommands[newCommands.length - 1]) {
             newCommands.push(command);
           }
@@ -101,6 +104,7 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
           if (isClearCommand(command)) {
             return {
               ...state,
+              commandsHistory: newCommands,
               bufferedContent: null,
               editorInput: "",
               currentLineStatus: "idle",
@@ -122,9 +126,11 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
           };
         }
         case "TYPE": {
-          const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
+          const [oldCaretTextBefore, oldCaretTextAfter] =
+            caretTextBeforeUpdate(state);
 
-          const newEditorInput = oldCaretTextBefore + action.text + oldCaretTextAfter;
+          const newEditorInput =
+            oldCaretTextBefore + action.text + oldCaretTextAfter;
           const newCaretPosition = state.caretPosition + 1;
 
           const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
@@ -141,9 +147,11 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
           };
         }
         case "DELETE": {
-          const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
+          const [oldCaretTextBefore, oldCaretTextAfter] =
+            caretTextBeforeUpdate(state);
 
-          const newEditorInput = oldCaretTextBefore.slice(0, -1) + oldCaretTextAfter;
+          const newEditorInput =
+            oldCaretTextBefore.slice(0, -1) + oldCaretTextAfter;
           const newCaretPosition = state.caretPosition - 1;
 
           const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
@@ -163,9 +171,11 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
           return state;
         }
         case "PASTE": {
-          const [oldCaretTextBefore, oldCaretTextAfter] = caretTextBeforeUpdate(state);
+          const [oldCaretTextBefore, oldCaretTextAfter] =
+            caretTextBeforeUpdate(state);
 
-          const newEditorInput = oldCaretTextBefore + action.text + oldCaretTextAfter;
+          const newEditorInput =
+            oldCaretTextBefore + action.text + oldCaretTextAfter;
           const newCaretPosition = state.caretPosition + action.text.length;
 
           const [newCaretTextBefore, newCaretTextAfter] = caretTextAfterUpdate(
@@ -218,6 +228,7 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
         case "RESET_CARET_POSITION": {
           return {
             ...state,
+            editorInput: "",
             textBeforeCaret: "",
             textAfterCaret: "",
             caretPosition: 0,
@@ -262,7 +273,6 @@ function terminalReducer(state: TerminalState, action: TerminalActions): Termina
       return state;
     }
   }
-
 }
 
 function caretTextBeforeUpdate(state: TerminalState) {
@@ -274,7 +284,10 @@ function caretTextBeforeUpdate(state: TerminalState) {
   return [caretTextBefore, caretTextAfter];
 }
 
-function caretTextAfterUpdate(newEditorInput: string, newCaretPosition: number) {
+function caretTextAfterUpdate(
+  newEditorInput: string,
+  newCaretPosition: number
+) {
   const [caretTextBefore, caretTextAfter] = Utils.splitStringAtIndex(
     newEditorInput,
     newCaretPosition
@@ -295,9 +308,23 @@ const initialState: TerminalState = {
 
 export function TerminalContextProvider(props: any) {
   const { children } = props;
-  const [historyPointer, setHistoryPointer] = React.useState(null);
+  const [historyPointer, setHistoryPointer] = React.useState<number | null>(
+    null
+  );
 
   const [store, send] = React.useReducer(terminalReducer, initialState);
+
+  const sendWrapper = React.useCallback(
+    (action: TerminalActions) => {
+      // Reset history pointer on submit
+      if (action.type === "SUBMIT") {
+        setHistoryPointer(store.commandsHistory.length);
+      }
+
+      send(action);
+    },
+    [store.commandsHistory.length]
+  );
 
   React.useEffect(() => {
     setHistoryPointer(store.commandsHistory.length);
@@ -332,17 +359,15 @@ export function TerminalContextProvider(props: any) {
     };
 
     return {
-      send,
+      send: sendWrapper,
       store,
       getPreviousCommand,
-      getNextCommand
+      getNextCommand,
     };
-  }, [historyPointer, store]);
+  }, [historyPointer, sendWrapper, store]);
 
   return (
-    <TerminalContext.Provider
-      value={contextValue}
-    >
+    <TerminalContext.Provider value={contextValue}>
       {children}
     </TerminalContext.Provider>
   );
@@ -350,12 +375,14 @@ export function TerminalContextProvider(props: any) {
 export function useTerminal() {
   const context = React.useContext(TerminalContext);
   if (context === undefined) {
-    throw new Error("useTerminal must be used within a TerminalContextProvider");
+    throw new Error(
+      "useTerminal must be used within a TerminalContextProvider"
+    );
   }
   return context;
 }
 
 export default {
   TerminalContext,
-  TerminalContextProvider
+  TerminalContextProvider,
 };

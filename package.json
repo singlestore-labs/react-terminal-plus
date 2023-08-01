@@ -8,10 +8,13 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build": "./node_modules/.bin/cross-env NODE_ENV=production rollup -c",
     "watch": "rollup -cw",
-    "test": "jest",
+    "test": "cypress run --component --headless",
+    "cct:open": "cypress open --component --headed",
+    "test:jest": "jest",
     "prepublishOnly": "npm run build",
     "release": "npx np"
   },
@@ -35,6 +38,7 @@
   "license": "MIT",
   "homepage": "https://github.com/bony2023/react-terminal#readme",
   "devDependencies": {
+    "@testing-library/cypress": "^9.0.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.2.0",
@@ -46,9 +50,11 @@
     "@types/react-test-renderer": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
+    "@vitejs/plugin-react": "^4.0.4",
     "cheerio": "1.0.0-rc.12",
     "codecov": "^3.6.1",
     "cross-env": "^7.0.3",
+    "cypress": "^12.17.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
     "enzyme-to-json": "^3.4.3",
@@ -63,6 +69,8 @@
     "jest-environment-jsdom": "^29.4.1",
     "npm-install-peers": "^1.2.1",
     "postcss": "^8.4.21",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
     "react-test-renderer": "^18.2.0",
     "rollup": "^3.13.0",
     "rollup-plugin-postcss": "^4.0.2",
@@ -71,7 +79,8 @@
     "sass": "^1.58.0",
     "ts-jest": "^29.0.5",
     "ts-loader": "^9.4.2",
-    "typescript": "^4.9.5"
+    "typescript": "^4.9.5",
+    "vite": "^4.4.8"
   },
   "resolutions": {
     "cheerio": "1.0.0-rc.10"

@@ -72,7 +72,7 @@ export const AppFork = () => {
 
   const defaultHandler = () =>
     new Promise((resolve) => {
-      setTimeout(() => resolve('hello'), 5000);
+      setTimeout(() => resolve('hello'), 50);
     });
 
   return (

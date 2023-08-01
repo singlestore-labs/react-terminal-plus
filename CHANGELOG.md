@@ -1,3 +1,14 @@
+## 0.0.6 (1st August 2023)
+
+### Fixes
+
+- Fixed a bug regarding the command history not working properly when submitting the same command twice;
+- Fixed a bug the "RESET_CARET" command, to that it also resets the current editor input
+
+### Internal
+
+- Replaced RTL integration tests with CCT ones
+
 ## 0.0.5 (30th June 2023)
 
 ### Changed
