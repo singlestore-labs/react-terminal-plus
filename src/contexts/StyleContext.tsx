@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as style from "../index.scss";
+import * as style from "../index.module.scss";
 
 export const styles = style.default;
 export const StyleContext = React.createContext(null);
