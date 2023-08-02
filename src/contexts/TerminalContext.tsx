@@ -100,7 +100,6 @@ function terminalReducer(
           const newCommands = [...state.commandsHistory];
           if (command && command !== newCommands[newCommands.length - 1]) {
             newCommands.push(command);
-            console.log(newCommands)
             addCommandToHistory(command);
           }
 

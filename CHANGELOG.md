@@ -1,3 +1,9 @@
+## 0.0.10 (2nd August 2023)
+
+### Internal
+
+- Don't allow console logs
+
 ## 0.0.9 (2nd August 2023)
 
 ### Changed
