@@ -1,3 +1,9 @@
+## 0.0.9 (2nd August 2023)
+
+### Changed
+
+- Default handler TS definition to accept promises
+
 ## 0.0.8 (2nd August 2023)
 
 ### Added
