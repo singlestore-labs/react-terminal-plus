@@ -1,6 +1,6 @@
 
 const localStorageSchema = {
-    COMMAND_HISTORY: "commandHistory",
+    COMMAND_HISTORY: "react-terminal-plus-commandHistory",
 } as const;
 
 export const getCommandHistory = (): Array<string> => {
