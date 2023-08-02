@@ -285,6 +285,41 @@ describe("ReactTerminal", () => {
     cy.findAllByText("jackharper", { exact: true, timeout: 1000 }).should("have.length", 1);
   });
 
+  it("should save commands history in localstorage if enabled", () => {
+    cy.mount(
+      <TerminalContextProvider>
+        <ReactTerminal />
+      </TerminalContextProvider>
+    );
+
+    writeInTerminal("first");
+    writeInTerminal("Enter");
+
+    writeInTerminal("second");
+    writeInTerminal("Enter");
+
+    cy.mount(
+      <TerminalContextProvider useLocalStorage={true}>
+        <ReactTerminal />
+      </TerminalContextProvider>
+    );
+
+    writeInTerminal("ArrowUp");
+    cy.findByText("second");
+    writeInTerminal("ArrowUp");
+    cy.findByText("first");
+
+    cy.mount(
+      <TerminalContextProvider useLocalStorage={false}>
+        <ReactTerminal />
+      </TerminalContextProvider>
+    );
+
+    writeInTerminal("ArrowUp");
+    cy.findByText("second").should("not.exist");
+
+  });
+
 });
 
 function writeText(container: Cypress.Chainable<JQuery<HTMLElement>>, value: string, metaKey: boolean, shiftKey: boolean) {

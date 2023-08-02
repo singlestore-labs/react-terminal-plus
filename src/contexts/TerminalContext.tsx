@@ -1,6 +1,7 @@
 import * as React from "react";
 import { isClearCommand } from "../common/Commands";
 import Utils from "../common/Utils";
+import { addCommandToHistory, getCommandHistory } from "../hooks/local-storage";
 
 type ProcessingStatus = "idle" | "processing" | "success" | "error";
 
@@ -99,6 +100,8 @@ function terminalReducer(
           const newCommands = [...state.commandsHistory];
           if (command && command !== newCommands[newCommands.length - 1]) {
             newCommands.push(command);
+            console.log(newCommands)
+            addCommandToHistory(command);
           }
 
           if (isClearCommand(command)) {
@@ -296,21 +299,25 @@ function caretTextAfterUpdate(
   return [caretTextBefore, caretTextAfter];
 }
 
-const initialState: TerminalState = {
-  bufferedContent: null,
-  commandsHistory: [],
-  editorInput: "",
-  currentLineStatus: "idle",
-  caretPosition: 0,
-  textBeforeCaret: "",
-  textAfterCaret: "",
-};
+type TerminalContextProviderProps = {
+  children: React.ReactNode;
+  useLocalStorage?: boolean;
+}
 
-export function TerminalContextProvider(props: any) {
-  const { children } = props;
+export function TerminalContextProvider({ children, useLocalStorage = true }: TerminalContextProviderProps) {
   const [historyPointer, setHistoryPointer] = React.useState<number | null>(
     null
   );
+
+  const initialState: TerminalState = {
+    bufferedContent: null,
+    commandsHistory: useLocalStorage ? getCommandHistory() : [],
+    editorInput: "",
+    currentLineStatus: "idle",
+    caretPosition: 0,
+    textBeforeCaret: "",
+    textAfterCaret: "",
+  };
 
   const [store, send] = React.useReducer(terminalReducer, initialState);
 

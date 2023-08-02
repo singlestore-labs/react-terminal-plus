@@ -1,3 +1,9 @@
+## 0.0.8 (2nd August 2023)
+
+### Added
+
+- Add localStorage support for commands history
+
 ## 0.0.7 (2nd August 2023)
 
 ### Added
