@@ -1,3 +1,13 @@
+## 0.0.7 (2nd August 2023)
+
+### Added
+
+- Allow `copy` & `paste` through the context menu (right click)
+
+### Changed
+
+- Changed `copy` & `paste` shortcuts to `ctrl + c` and `ctrl + v` respectively. Copy only works is there is text selected, else it will stop the current command & do a line break
+
 ## 0.0.6 (1st August 2023)
 
 ### Fixes

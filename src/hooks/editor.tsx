@@ -176,7 +176,6 @@ export const useEditorInput = (
       send({ type: "CLEAR" })
     } else if (
       (event.metaKey || event.ctrlKey)
-      && event.shiftKey
       && eventKey.toLowerCase() === "v"
     ) {
       navigator.clipboard.readText().then((pastedText) => {
@@ -184,21 +183,16 @@ export const useEditorInput = (
       });
     } else if (
       (event.metaKey || event.ctrlKey)
-      && event.shiftKey
       && eventKey.toLowerCase() === "c"
     ) {
       const selectedText = window.getSelection().toString();
-      navigator.clipboard.writeText(selectedText).then(() => {
-        send({ type: "COPY" });
-      });
-    } else if (
-      (event.metaKey || event.ctrlKey)
-      && eventKey.toLowerCase() === "c"
-    ) {
-      if (runningPromiseRef.current) {
-        runningPromiseRef.current.cancel();
+      if (selectedText) {
+        navigator.clipboard.writeText(selectedText).then(() => {
+          send({ type: "COPY" });
+        });
+      } else {
+        cancelCommand()
       }
-      cancelCommand()
     } else {
       if (eventKey && eventKey.length === 1) {
         send({ type: "TYPE", text: eventKey })

@@ -3,7 +3,7 @@
     "jsx": "react",
     "target": "es5",
     "lib": ["ES2016", "dom"],
-    "types": ["cypress", "@testing-library/cypress"],
+    "types": ["cypress", "@testing-library/cypress", "cypress-real-events"],
     "esModuleInterop": true
   },
   "include": ["**/*.tsx", "**/*.ts"]

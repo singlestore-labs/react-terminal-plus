@@ -13,7 +13,7 @@
     "build": "./node_modules/.bin/cross-env NODE_ENV=production rollup -c",
     "watch": "rollup -cw",
     "test": "cypress run --component --headless",
-    "cct:open": "cypress open --component --headed",
+    "cct:open": "cypress open --component",
     "test:jest": "jest",
     "prepublishOnly": "npm run build",
     "release": "npx np"
@@ -55,6 +55,7 @@
     "codecov": "^3.6.1",
     "cross-env": "^7.0.3",
     "cypress": "^12.17.2",
+    "cypress-real-events": "^1.9.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
     "enzyme-to-json": "^3.4.3",
