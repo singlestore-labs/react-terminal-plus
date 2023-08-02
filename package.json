@@ -55,6 +55,7 @@
     "codecov": "^3.6.1",
     "cross-env": "^7.0.3",
     "cypress": "^12.17.2",
+    "cypress-real-events": "^1.9.1",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.7",
     "enzyme-to-json": "^3.4.3",
@@ -112,10 +113,7 @@
     "collectCoverage": true
   },
   "dependencies": {
-    "-": "^0.0.1",
-    "D": "^1.0.0",
-    "cancelable-promise": "^4.3.1",
-    "cypress-real-events": "^1.9.1"
+    "cancelable-promise": "^4.3.1"
   },
   "engines": {
     "node": ">=16"
