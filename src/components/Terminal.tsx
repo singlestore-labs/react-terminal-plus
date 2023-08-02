@@ -20,7 +20,7 @@ export type TerminalProps = {
   commands?: Record<string, TerminalMessage>,
   welcomeMessage?: TerminalMessage,
   errorMessage?: TerminalMessage,
-  defaultHandler?: (command: string, commandArguments: string) => TerminalMessage,
+  defaultHandler?: (command: string, commandArguments: string) => TerminalMessage | Promise<TerminalMessage>,
 }
 
 export default function Terminal(props: TerminalProps) {
