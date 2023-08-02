@@ -154,23 +154,30 @@ describe("ReactTerminal", () => {
     cy.get('[class*="preWhiteSpace"]').eq(1).should("have.text", "");
   });
 
-  it("paste the text from clipboard", () => {
+  it("copy & paste the text from clipboard", () => {
     cy.mount(
       <TerminalContextProvider>
-        <ReactTerminal commands={{ whoami: "jackharper" }} />
+        <ReactTerminal commands={{ whoami: "jackharper", whoamiwhoami: "copy/paste working" }} />
       </TerminalContextProvider>
     );
 
-    const mockReadText = "whoami";
+    writeInTerminal("whoami", true);
 
-    // Stub the navigator.clipboard.readText method with a Promise that resolves to the mockReadText
-    cy.window().then((win) => {
-      cy.stub(win.navigator.clipboard, "readText").resolves(mockReadText);
+    cy.get('[class*="preWhiteSpace"]').eq(0).then(($element) => {
+      const range = document.createRange();
+      range.selectNodeContents($element[0]);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      cy.wrap($element).trigger("keydown", { metaKey: true, key: "c" });
     });
 
-    writeInTerminal("v", true, true);
+    cy.get('[class*="preWhiteSpace"]').eq(0).realClick().trigger("keydown", { metaKey: true, key: "v" });
+    cy.findByText("whoamiwhoami");
+
     writeInTerminal("Enter");
-    cy.findByText("jackharper");
+    cy.findByText("copy/paste working");
   });
 
   it("empty command does nothing", () => {

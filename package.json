@@ -13,7 +13,7 @@
     "build": "./node_modules/.bin/cross-env NODE_ENV=production rollup -c",
     "watch": "rollup -cw",
     "test": "cypress run --component --headless",
-    "cct:open": "cypress open --component --headed",
+    "cct:open": "cypress open --component",
     "test:jest": "jest",
     "prepublishOnly": "npm run build",
     "release": "npx np"
@@ -112,7 +112,10 @@
     "collectCoverage": true
   },
   "dependencies": {
-    "cancelable-promise": "^4.3.1"
+    "-": "^0.0.1",
+    "D": "^1.0.0",
+    "cancelable-promise": "^4.3.1",
+    "cypress-real-events": "^1.9.1"
   },
   "engines": {
     "node": ">=16"
