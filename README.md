@@ -8,8 +8,8 @@ setting up github repo in gitlab: https://gist.github.com/DavideMontersino/810eb
 
 Features to add:
 
-- []: Properly styled results - `white-space: pre-wrap;`
-- []: Add new native commands like: CTRL+L, CTRL+C
+- [X]: Properly styled results - `white-space: pre-wrap;`
+- [X]: Add new native commands like: CTRL+L, CTRL+C
 - []: Hook to run controlled commands - e.g useTerminal()
 - []: Allow highlighting of text with keyboard
 
@@ -55,3 +55,24 @@ week 3/4 (if time permits)
 1. a way to copy everything
 1. save buffer to local-storage
 1. apply colors highlights
+
+## Terminal Features
+
+- [X]: Copy Pasting through keyboard - Ctrl+c/Ctrl+V
+- [X]: Copy Pasting through browser's context menu - Right Click
+- [X]: Cancel running command with Ctrl+C
+- [X]: Clear terminal with Ctrl+L
+- [X]: Add `cls` command to clear terminal
+- [X]: Localstorage support for commands history
+
+## Mongo Shell in Portal - Missing Features
+
+- [2]: Look at firewall rules - try
+- [2]: Only show mongo shell if there are workspaces with KAI enabled - let's hide for now
+- [2]: Terminal background color - talk with Philip
+- [1]: Blocklist commands - [window, ...]
+- [2]: Talk with Francisco about the portal's security concerns
+- [3]: Integrate into the tutorial?? - later
+- [1]: Bug showing the connected database - urgent
+- [1]: colors/font-size/line-height - urgent
+- []: ???

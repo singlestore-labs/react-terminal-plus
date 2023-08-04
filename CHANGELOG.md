@@ -1,3 +1,9 @@
+## 0.0.11 (4th August 2023)
+
+### Feature
+
+- Add types to `themes` prop in `Terminal` component
+
 ## 0.0.10 (2nd August 2023)
 
 ### Internal

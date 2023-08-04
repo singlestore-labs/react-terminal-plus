@@ -6,7 +6,9 @@ import materialLightTheme from "./material-light";
 import materialOceanTheme from "./material-ocean";
 import matrixTheme from "./matrix";
 
-export default {
+export type DefaultThemes = keyof typeof defaultThemes;
+
+export const defaultThemes = {
 	"dark": darkTheme,
 	"light": lightTheme,
 	"dracula": draculaTheme,
