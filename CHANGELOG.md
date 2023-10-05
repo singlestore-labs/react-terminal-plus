@@ -1,3 +1,9 @@
+## 0.0.12 (5th October 2023)
+
+### Fixes
+
+- Fix a bug when clearing the local storage's command history
+
 ## 0.0.11 (4th August 2023)
 
 ### Feature

@@ -1,3 +1,4 @@
+const CHROME_LOCAL_STORAGE_KEY_LIMIT = 20;
 
 const localStorageSchema = {
     COMMAND_HISTORY: "react-terminal-plus-commandHistory",
@@ -5,23 +6,38 @@ const localStorageSchema = {
 
 export const getCommandHistory = (): Array<string> => {
     try {
-        const commandHistoryStr = localStorage.getItem(localStorageSchema.COMMAND_HISTORY) ?? "[]";
-        return JSON.parse(commandHistoryStr)
+        const commandHistoryStr =
+            localStorage.getItem(localStorageSchema.COMMAND_HISTORY) ?? "[]";
+        return JSON.parse(commandHistoryStr);
     } catch (e) {
         console.error(e);
         return [];
     }
-}
+};
 
 export const addCommandToHistory = (command: string) => {
     let commandHistory = getCommandHistory();
     commandHistory.push(command);
 
-    // to make sure this doesn't overgrow more than 1k commands
-    if (commandHistory.length > 1000) {
-        commandHistory = commandHistory.slice(50);
+    try {
+        // to make sure this doesn't overgrow more than the browsers' limit
+        // https://stackoverflow.com/a/61018107
+        if (
+            JSON.stringify(commandHistory).length > CHROME_LOCAL_STORAGE_KEY_LIMIT
+        ) {
+            commandHistory = commandHistory.slice(50);
+        }
+
+        localStorage.setItem(
+            localStorageSchema.COMMAND_HISTORY,
+            JSON.stringify(commandHistory)
+        );
+    } catch (e) {
+        console.error(e);
+        commandHistory = [command];
+        localStorage.setItem(
+            localStorageSchema.COMMAND_HISTORY,
+            JSON.stringify(commandHistory)
+        );
     }
-
-    localStorage.setItem(localStorageSchema.COMMAND_HISTORY, JSON.stringify(commandHistory))
-}
-
+};
