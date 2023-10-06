@@ -3,7 +3,7 @@
   "np": {
     "tests": false
   },
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "A fork of the the 'react-terminal' package, with some extra features - react-terminal-plus",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
