@@ -236,7 +236,9 @@ export const useCurrentLine = (
             />
           </span>
         ) : null}
-        <span className={style.preWhiteSpace}>{store.textAfterCaret}</span>
+        <span style={{
+          "--caret-letter-color": themeStyles.themeBGColor, // apply different color to the letter under the caret
+        } as React.CSSProperties} className={`${style.preWhiteSpace} ${style.textAfterCaret}`}>{store.textAfterCaret}</span>
       </div>
     </>
   ) : (

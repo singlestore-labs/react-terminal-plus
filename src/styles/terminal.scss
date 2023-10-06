@@ -6,5 +6,8 @@
   height: 100%;
   width: 100%;
   margin: auto;
-  border-radius: 5px;
+
+  &--rounded {
+    border-radius: 5px;
+  }
 }

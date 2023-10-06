@@ -39,6 +39,7 @@ export type TerminalProps<ThemesT extends string> = {
   commands?: Record<string, TerminalMessage>;
   welcomeMessage?: TerminalMessage;
   errorMessage?: TerminalMessage;
+  rounded?: boolean;
   themes?: Record<ThemesT, ThemeSchema>;
   theme?: NoInfer<ThemesT> | DefaultThemes;
   defaultHandler?: (
@@ -70,7 +71,10 @@ export default function Terminal<ThemesT extends string>(
     errorMessage = "not found!",
     enableInput = true,
     defaultHandler = null,
+    rounded = false,
   } = props;
+
+  const roundedClass = rounded ? style["terminal--rounded"] : "";
 
   const controls = showControlBar ? (
     <Controls
@@ -102,7 +106,7 @@ export default function Terminal<ThemesT extends string>(
       data-testid="terminal"
     >
       <div
-        className={`${style.terminal}`}
+        className={`${style.terminal} ${roundedClass}`}
         style={{
           background: themeStyles.themeToolbarColor,
           color: themeStyles.themeColor,

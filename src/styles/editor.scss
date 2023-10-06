@@ -58,6 +58,17 @@
     }
   }
 
+  .textAfterCaret {
+    z-index: 10;
+    position: relative;
+    display: inline-block;
+
+    &::first-letter {
+      // this is set in JSX
+      color: var(--caret-letter-color);
+    }
+  }
+
   .caret {
     position: relative;
     // -webkit-animation: blink 0.75s ease-in-out infinite;
