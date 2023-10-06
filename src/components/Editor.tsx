@@ -5,8 +5,22 @@ import { ThemeContext } from "../contexts/ThemeContext";
 import { useTerminal } from "../contexts/TerminalContext";
 import { useCurrentLine, useScrollToBottom } from "../hooks/editor";
 import { MouseEventHandler } from "react";
+import type { TerminalMessage, TerminalProps } from "./Terminal";
 
-export default function Editor(props: any) {
+type EditorProps = {
+  enableInput: boolean;
+  caret: boolean;
+  consoleFocused: boolean;
+  prompt: string;
+  commands: Record<string, TerminalMessage>;
+  welcomeMessage: TerminalMessage;
+  errorMessage: TerminalMessage;
+  showControlBar: boolean;
+  defaultHandler: TerminalProps<any>["defaultHandler"];
+  rounded: boolean;
+}
+
+export default function Editor(props: EditorProps) {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const style = React.useContext(StyleContext);
   const themeStyles = React.useContext(ThemeContext);
@@ -44,7 +58,10 @@ export default function Editor(props: any) {
     errorMessage,
     showControlBar,
     defaultHandler,
+    rounded
   } = props;
+
+  const roundedClass = rounded ? style["terminal--rounded"] : "";
 
   const currentLine = useCurrentLine(
     caret,
@@ -63,13 +80,15 @@ export default function Editor(props: any) {
       ref={wrapperRef}
       onMouseDown={onMouseDown}
       onPaste={onpaste}
-      className={`${style.editor} ${!showControlBar ? style.curvedTop : null} ${showControlBar ? style.editorWithTopBar : null
+      className={`${style.editor} ${roundedClass} ${showControlBar ? style.editorWithTopBar : null
         }`}
       style={{ background: themeStyles.themeBGColor }}
     >
-      {welcomeMessage}
-      {store.bufferedContent}
-      {currentLine}
+      <>
+        {welcomeMessage}
+        {store.bufferedContent}
+        {currentLine}
+      </>
     </div>
   );
 }

@@ -8,8 +8,10 @@
   font-family: 'Source Code Pro', monospace;
   font-size: 18px;
   line-height: 22px;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
+
+  &--rounded {
+    border-radius: 5px;
+  }
 
   // prevents style effects on copy/paste
   caret-color: transparent;
@@ -143,9 +145,4 @@
 
 .editorWithTopBar {
   height: calc(100% - 46px);
-}
-
-.curvedTop {
-  border-top-left-radius: 5px;
-  border-top-right-radius: 5px;
 }

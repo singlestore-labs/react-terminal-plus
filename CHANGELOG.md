@@ -1,3 +1,9 @@
+## 0.0.14 (6th October 2023)
+
+### Fixes
+
+- Fix the `rounded` prop for when the controls aren't shown
+
 ## 0.0.13 (6th October 2023)
 
 ### Changed

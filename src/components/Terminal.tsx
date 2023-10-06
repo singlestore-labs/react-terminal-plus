@@ -9,7 +9,7 @@ import { DefaultThemes } from "../themes";
 import Controls from "./Controls";
 import Editor from "./Editor";
 
-type TerminalMessage = string | React.ReactNode | Function;
+export type TerminalMessage = string | React.ReactNode | Function;
 type ThemeSchema = {
   /*
    * The background color of the terminal
@@ -95,6 +95,7 @@ export default function Terminal<ThemesT extends string>(
       enableInput={enableInput}
       showControlBar={showControlBar}
       defaultHandler={defaultHandler}
+      rounded={rounded}
     />
   );
 
