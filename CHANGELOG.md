@@ -1,3 +1,13 @@
+## 0.0.13 (6th October 2023)
+
+### Changed
+
+- The letter under the caret has now the same color as the background color
+
+### Feature
+
+- Added a prop `rounded` to control the border radius of the terminal
+
 ## 0.0.12 (5th October 2023)
 
 ### Fixes
