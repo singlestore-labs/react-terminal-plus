@@ -1,5 +1,6 @@
 import React from "react";
 import { ReactTerminal, TerminalContextProvider } from "../../src/index"
+import dark from "../../src/themes/dark";
 
 describe("ReactTerminal", () => {
   it("renders ReactTerminal component", () => {
@@ -318,6 +319,23 @@ describe("ReactTerminal", () => {
     writeInTerminal("ArrowUp");
     cy.findByText("second").should("not.exist");
 
+  });
+
+  it("should have the character under the caret with the background color", () => {
+    cy.mount(
+      <TerminalContextProvider>
+        <ReactTerminal theme="dark" />
+      </TerminalContextProvider>
+    );
+
+    // write text and move cursor to left
+    writeInTerminal("db.connection.find({");
+    writeInTerminal("ArrowLeft");
+
+    // check the the char under the caret has the background color
+    cy.get('[class*="charUnderCaret"]').should("have.text", "{").then(($element) => {
+      cy.wrap($element).should("have.css", "color", dark.themeBGColor);
+    });
   });
 
 });
