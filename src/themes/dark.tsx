@@ -1,6 +1,6 @@
 export default {
-    themeBGColor: "#022833",
-    themeToolbarColor: "#131519",
-    themeColor: "#839496",
-    themePromptColor: "#a917a8"
-}
+    themeBGColor: "rgb(2, 40, 51)",
+    themeToolbarColor: "rgb(19, 21, 25)",
+    themeColor: "rgb(131, 148, 150)",
+    themePromptColor: "rgb(169, 23, 168)"
+};

@@ -1,3 +1,10 @@
+## 0.0.15 (13th October 2023)
+
+### Fixes
+
+- Fix the char under the caret, in case it's a special char - e.g. (, [, {
+- Fix the char under the caret when the caret isn't being shown
+
 ## 0.0.14 (6th October 2023)
 
 ### Fixes

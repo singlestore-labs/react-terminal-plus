@@ -71,10 +71,10 @@ week 3/4 (if time permits)
 - [X]: Bug showing the connected database - urgent
 - [X]: colors/font-size/line-height - urgent
 - [X]: Terminal background color - talk with Design
+- [X]: Integrate into the tutorial?? - later
 - [1]: Blocklist commands - [window, ...]
 - [2]: Only show mongo shell if there are workspaces with KAI enabled - let's hide for now
-- [2]: Look at firewall rules - try
 - [3]: Look at analytics
-- [3]: Integrate into the tutorial?? - later
+- [2]: Look at firewall rules - try
 - [2]: Talk with Design about including a "don't copy paste" warning - later
 - []: ???

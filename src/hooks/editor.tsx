@@ -223,12 +223,17 @@ export const useCurrentLine = (
   const themeStyles = React.useContext(ThemeContext);
   const { store } = useTerminal();
 
+  const characterUnderCaret = store.textAfterCaret[0];
+  const restTextAfterCaret = store.textAfterCaret.slice(1);
+
+  const showingCaret = consoleFocused && caret;
+
   const currentLine = store.currentLineStatus !== "processing" ? (
     <>
       <span style={{ color: themeStyles.themePromptColor }}>{prompt}</span>
       <div className={style.lineText}>
         <span className={style.preWhiteSpace}>{store.textBeforeCaret}</span>
-        {consoleFocused && caret ? ( // if caret isn't true, caret won't be displayed
+        {showingCaret ? ( // if caret isn't true, caret won't be displayed
           <span className={style.caret}>
             <span
               className={style.caretAfter}
@@ -236,15 +241,19 @@ export const useCurrentLine = (
             />
           </span>
         ) : null}
-        <span style={{
-          "--caret-letter-color": themeStyles.themeBGColor, // apply different color to the letter under the caret
-        } as React.CSSProperties} className={`${style.preWhiteSpace} ${style.textAfterCaret}`}>{store.textAfterCaret}</span>
+        <span className={`${style.preWhiteSpace}`}>
+          <span style={{
+            color: showingCaret ? themeStyles.themeBGColor : themeStyles.themeColor, // apply different color to the letter under the caret
+          }} className={style.charUnderCaret}>
+            {characterUnderCaret}
+          </span>
+          {restTextAfterCaret}</span>
       </div>
     </>
   ) : (
     <>
       <div className={style.lineText}>
-        {consoleFocused && caret ? ( // if caret isn't true, caret won't be displayed
+        {showingCaret ? ( // if caret isn't true, caret won't be displayed
           <span className={style.caret}>
             <span
               className={style.caretAfter}
