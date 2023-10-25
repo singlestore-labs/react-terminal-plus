@@ -65,6 +65,13 @@ week 3/4 (if time permits)
 - [X]: Add `cls` command to clear terminal
 - [X]: Localstorage support for commands history
 
+## TODO
+
+- check the algorithm behind localstorage command history cleanup
+- moving in command history should only show commands that match what's already written in the terminal
+- inversion of control for the terminal - allow controlled commands
+- allow highlighting of text with keyboard
+
 ## Mongo Shell in Portal - Missing Features
 
 - [X]: Talk with Francisco about the portal's security concerns
