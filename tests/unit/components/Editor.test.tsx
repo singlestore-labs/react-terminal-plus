@@ -6,23 +6,23 @@ import Editor from "../../../src/components/Editor";
 
 let props: any;
 const renderWrapper = () => (
-  <ContextProvider>
-    <TerminalContextProvider>
-      <Editor {...props} />
-    </TerminalContextProvider>
-  </ContextProvider>
+	<ContextProvider>
+		<TerminalContextProvider>
+			<Editor {...props} />
+		</TerminalContextProvider>
+	</ContextProvider>
 );
 
 describe("Editor", () => {
-  it("Editor renders correctly", () => {
-    props = {
-      consoleFocused: false,
-      prompt: "$",
-      commands: {},
-      welcomeMessage: "",
-      errorMessage: ""
-    };
+	it("Editor renders correctly", () => {
+		props = {
+			consoleFocused: false,
+			prompt: "$",
+			commands: {},
+			welcomeMessage: "",
+			errorMessage: "",
+		};
 
-    expect(renderer.create(renderWrapper()).toJSON()).toMatchSnapshot();
-  });
+		expect(renderer.create(renderWrapper()).toJSON()).toMatchSnapshot();
+	});
 });

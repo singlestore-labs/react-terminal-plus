@@ -111,4 +111,8 @@ temp/
 # OS related
 .DS_Store
 
+# Yarn v2
+install-state.gz
+
+
 # End of https://www.gitignore.io/api/node

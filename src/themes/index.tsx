@@ -9,11 +9,11 @@ import matrixTheme from "./matrix";
 export type DefaultThemes = keyof typeof defaultThemes;
 
 export const defaultThemes = {
-	"dark": darkTheme,
-	"light": lightTheme,
-	"dracula": draculaTheme,
+	dark: darkTheme,
+	light: lightTheme,
+	dracula: draculaTheme,
 	"material-dark": materialDarkTheme,
 	"material-light": materialLightTheme,
 	"material-ocean": materialOceanTheme,
-	"matrix": matrixTheme
+	matrix: matrixTheme,
 };

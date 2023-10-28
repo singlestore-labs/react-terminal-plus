@@ -3,13 +3,11 @@ import { StyleContextProvider } from "./StyleContext";
 import { ThemeContextProvider } from "./ThemeContext";
 
 export default function ContextProvider(props: any) {
-  const { children } = props;
+	const { children } = props;
 
-  return (
-    <StyleContextProvider>
-      <ThemeContextProvider>
-        {children}
-      </ThemeContextProvider>
-    </StyleContextProvider>
-  );
+	return (
+		<StyleContextProvider>
+			<ThemeContextProvider>{children}</ThemeContextProvider>
+		</StyleContextProvider>
+	);
 }

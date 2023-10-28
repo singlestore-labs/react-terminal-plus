@@ -1,5 +1,5 @@
 coverage:
-   status:
-     project:
-       default:
-         target: 90%
+  status:
+    project:
+      default:
+        target: 90%

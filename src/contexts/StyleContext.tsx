@@ -5,16 +5,14 @@ export const styles = style.default;
 export const StyleContext = React.createContext(null);
 
 export const StyleContextProvider = (props: any) => {
-  const { children } = props;
+	const { children } = props;
 
-  return (
-    <StyleContext.Provider value={styles}>
-      {children}
-    </StyleContext.Provider>
-  );
+	return (
+		<StyleContext.Provider value={styles}>{children}</StyleContext.Provider>
+	);
 };
 
 export default {
-  StyleContext,
-  StyleContextProvider
+	StyleContext,
+	StyleContextProvider,
 };
