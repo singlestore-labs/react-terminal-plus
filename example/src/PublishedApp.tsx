@@ -1,11 +1,9 @@
 import * as React from "react";
 import "./App.css";
-import { TerminalContextProvider } from "react-terminal";
-import { ReactTerminal } from "react-terminal";
-import { AppFork } from "./App-fork";
+import { TerminalContextProvider, ReactTerminal } from "react-terminal-plus";
 
-const App = () => {
-	const [theme, setTheme] = React.useState("light");
+export const PublishedApp = () => {
+	const [theme, setTheme] = React.useState<any>("dark");
 	const [controlBar, setControlBar] = React.useState(true);
 	const [controlButtons, setControlButtons] = React.useState(true);
 	const [prompt, setPrompt] = React.useState(">>>");
@@ -29,11 +27,11 @@ const App = () => {
 			</span>
 		),
 
-		change_prompt: (prompt) => {
+		change_prompt: (prompt: string) => {
 			setPrompt(prompt);
 		},
 
-		change_theme: (theme) => {
+		change_theme: (theme: any) => {
 			const validThemes = [
 				"light",
 				"dark",
@@ -57,7 +55,7 @@ const App = () => {
 			setControlButtons(!controlButtons);
 		},
 
-		evaluate_math_expression: async (expr) => {
+		evaluate_math_expression: async (expr: string) => {
 			const response = await fetch(
 				`https://api.mathjs.org/v4/?expr=${encodeURIComponent(expr)}`,
 			);
@@ -71,24 +69,27 @@ const App = () => {
 		</span>
 	);
 
+	const defaultHandler = (): Promise<any> =>
+		new Promise((resolve) => {
+			setTimeout(() => resolve("hello"), 1000);
+		});
+
 	return (
-		<div className="App">
-			<TerminalContextProvider>
-				<ReactTerminal
-					prompt={prompt}
-					theme={theme}
-					showControlBar={controlBar}
-					showControlButtons={controlButtons}
-					welcomeMessage={welcomeMessage}
-					commands={commands}
-					defaultHandler={(command, commandArguments) => {
-						return `${command} passed on to default handler with arguments ${commandArguments}`;
-					}}
-				/>
-			</TerminalContextProvider>
-			<AppFork />
-		</div>
+		<>
+			<h1>Published Version: {process.env["react-terminal-plus-version"]}</h1>
+			<div className="App">
+				<TerminalContextProvider>
+					<ReactTerminal
+						prompt={prompt}
+						theme={theme}
+						showControlBar={controlBar}
+						showControlButtons={controlButtons}
+						welcomeMessage={welcomeMessage}
+						commands={commands}
+						defaultHandler={defaultHandler}
+					/>
+				</TerminalContextProvider>
+			</div>
+		</>
 	);
 };
-
-export default App;

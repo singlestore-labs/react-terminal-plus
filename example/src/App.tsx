@@ -1,10 +1,12 @@
 import * as React from "react";
 import "./App.css";
-import { TerminalContextProvider } from "react-terminal-fork";
-import { ReactTerminal } from "react-terminal-fork";
+import {
+	TerminalContextProvider,
+	ReactTerminal,
+} from "react-terminal-plus-local";
 
-export const AppFork = () => {
-	const [theme, setTheme] = React.useState("dark");
+export const App = () => {
+	const [theme, setTheme] = React.useState<any>("dark");
 	const [controlBar, setControlBar] = React.useState(true);
 	const [controlButtons, setControlButtons] = React.useState(true);
 	const [prompt, setPrompt] = React.useState(">>>");
@@ -28,11 +30,11 @@ export const AppFork = () => {
 			</span>
 		),
 
-		change_prompt: (prompt) => {
+		change_prompt: (prompt: string) => {
 			setPrompt(prompt);
 		},
 
-		change_theme: (theme) => {
+		change_theme: (theme: any) => {
 			const validThemes = [
 				"light",
 				"dark",
@@ -56,7 +58,7 @@ export const AppFork = () => {
 			setControlButtons(!controlButtons);
 		},
 
-		evaluate_math_expression: async (expr) => {
+		evaluate_math_expression: async (expr: string) => {
 			const response = await fetch(
 				`https://api.mathjs.org/v4/?expr=${encodeURIComponent(expr)}`,
 			);
@@ -70,24 +72,27 @@ export const AppFork = () => {
 		</span>
 	);
 
-	const defaultHandler = () =>
+	const defaultHandler = (): Promise<any> =>
 		new Promise((resolve) => {
 			setTimeout(() => resolve("hello"), 1000);
 		});
 
 	return (
-		<div className="App">
-			<TerminalContextProvider>
-				<ReactTerminal
-					prompt={prompt}
-					theme={theme}
-					showControlBar={controlBar}
-					showControlButtons={controlButtons}
-					welcomeMessage={welcomeMessage}
-					commands={commands}
-					defaultHandler={defaultHandler}
-				/>
-			</TerminalContextProvider>
-		</div>
+		<>
+			<h1>Local Version</h1>
+			<div className="App">
+				<TerminalContextProvider>
+					<ReactTerminal
+						prompt={prompt}
+						theme={"dracula"}
+						showControlBar={controlBar}
+						showControlButtons={controlButtons}
+						welcomeMessage={welcomeMessage}
+						commands={commands}
+						defaultHandler={defaultHandler}
+					/>
+				</TerminalContextProvider>
+			</div>
+		</>
 	);
 };

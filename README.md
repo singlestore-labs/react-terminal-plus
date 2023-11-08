@@ -1,87 +1,113 @@
-# Forked version of react-terminal
+# react-terminal-plus
 
-original repo: https://github.com/bony2023/react-terminal
+<p align="center">🚀 React component that renders and feels like a Terminal 🖥</p>
 
-setting up github repo in gitlab: https://gist.github.com/DavideMontersino/810ebaa170a2aa2d2cad
+<p align="center">
+  <a href="#features">Features</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#usage">Usage</a> •
+  <a href="#props">Props</a> •
+  <a href="#report-a-bug">Report a bug</a>
+</p>
 
-## Roadmap
+<img alt="react-terminal-plus preview" src="./react-terminal-plus.gif" />
 
-Features to add:
+## Features
 
-- [X]: Properly styled results - `white-space: pre-wrap;`
-- [X]: Add new native commands like: CTRL+L, CTRL+C
-- []: Hook to run controlled commands - e.g useTerminal()
-- []: Allow highlighting of text with keyboard
+- Mobile support. 📱
+- Customizable commands, prompt and error message. ✅
+- Support callbacks(async/non-async) for commands. 🔄
+- Command history using arrow up and down. 🔼
+- Support for copy/paste through keyboard and browser's context. 📋
+- Cancel running command using `Ctrl + C`. ⛔
+- In-built themes and support to create more. 🚀
+- Clear the terminal with `clear` command or using `Ctrl + L`. 🧹
+- Local storage support for the command history. 💾
+- Full TypeScript support. 🎉
 
-### New Commands
+## Installation
 
-- cls => same as clear
+```
+npm install react-terminal-plus
+```
 
-### New Shortcuts
+OR
 
-CTRL + C
-CTRL + L
+```
+yarn add react-terminal-plus
+```
 
-### Required to launch
+OR
 
-- Cancel command shortcut (or at least button)
+```
+pnpm i react-terminal-plus
+```
 
-### To Look At
+## Usage
 
-- blinking cursor (maybe too fast)
-- look into colors highlights
-- a way to copy everything
-- save buffer to local-storage
+```tsx
+import { TerminalContextProvider, ReactTerminal } from "react-terminal-plus";
 
-### Portal Stuff
+function App(props) {
+	// Define commands here
+	const commands = {
+		whoami: "jackharper",
+		cd: (directory) => `changed path to ${directory}`,
+	};
 
-- allow eval on portal - iframe isolate?
-- connection state info
-- firewall rules
+	return (
+		<TerminalContextProvider>
+			<ReactTerminal commands={commands} />
+		</TerminalContextProvider>
+	);
+}
+```
 
-### Timeline 4 weeks / 5 June - 2 July
+## Creating custom themes
 
-week 1/2
+The component comes with few in-built themes: `light`, `dark`, `material-light`, `material-dark`, `material-ocean`, `matrix` and `dracula`. You can also create custom themes by passing `themes` parameter in props, as follows:
 
-1. Implement "cancel running command" shortcut => Ctrl + C
-1. Add `cls` command => same as clear
-1. Allow eval on portal - iframe isolate?
-1. Hide Mongo Terminal it behind employee flag for internal testing
+```
+<ReactTerminal
+  commands={commands}
+  themes={{
+    "my-custom-theme": {
+      themeBGColor: "#272B36",
+      themeToolbarColor: "#DBDBDB",
+      themeColor: "#FFFEFC",
+      themePromptColor: "#a917a8"
+    }
+  }}
+  theme="my-custom-theme"
+/>
+```
 
----
+## Props
 
-week 3/4 (if time permits)
+| name                 | description                                                                                                                                                       | default      |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ |
+| `welcomeMessage`     | A welcome message to show at the start, before the prompt begins. Value can be either a string or JSX                                                             | null         |
+| `prompt`             | Terminal prompt                                                                                                                                                   | >>>          |
+| `commands`           | List of commands to be provided as a key value pair where value can be either a string, JSX/HTML tag or callback                                                  | null         |
+| `errorMessage`       | Message to show when unidentified command executed, can be either a string, JSX/HTML tag or callback                                                              | "not found!" |
+| `enableInput`        | Whether to enable user input                                                                                                                                      | true         |
+| `showControlBar`     | Whether to show the top control bar                                                                                                                               | true         |
+| `showControlButtons` | Whether to show the control buttons at the top bar of the terminal                                                                                                | true         |
+| `theme`              | Theme of the terminal                                                                                                                                             | "light"      |
+| `themes`             | Themes object to supply custom themes                                                                                                                             | null         |
+| `defaultHandler`     | Default handler to be used (if provided) when no commands match. Useful when you don't know list of commands beforehand/want to send them to server for handling. | null         |
 
-1. a way to copy everything
-1. save buffer to local-storage
-1. apply colors highlights
+## In-built commands
 
-## Terminal Features
+| command | description        |
+| ------- | ------------------ |
+| clear   | clears the console |
+| cls     | clears the console |
 
-- [X]: Copy Pasting through keyboard - Ctrl+c/Ctrl+V
-- [X]: Copy Pasting through browser's context menu - Right Click
-- [X]: Cancel running command with Ctrl+C
-- [X]: Clear terminal with Ctrl+L
-- [X]: Add `cls` command to clear terminal
-- [X]: Localstorage support for commands history
+## In-built shortcuts
 
-## TODO
-
-- check the algorithm behind localstorage command history cleanup
-- moving in command history should only show commands that match what's already written in the terminal
-- inversion of control for the terminal - allow controlled commands
-- allow highlighting of text with keyboard
-
-## Mongo Shell in Portal - Missing Features
-
-- [X]: Talk with Francisco about the portal's security concerns
-- [X]: Bug showing the connected database - urgent
-- [X]: colors/font-size/line-height - urgent
-- [X]: Terminal background color - talk with Design
-- [X]: Integrate into the tutorial?? - later
-- [1]: Blocklist commands - [window, ...]
-- [X]: Look at analytics
-- [2]: Only show mongo shell if there are workspaces with KAI enabled - let's hide for now
-- [2]: Look at firewall rules - try
-- [2]: Talk with Design about including a "don't copy paste" warning - later
-- []: ???
+| shortcut | description                                                 |
+| -------- | ----------------------------------------------------------- |
+| ctrl + c | copy OR cancel running command if there is no selected text |
+| ctrl + v | paste                                                       |
+| ctrl + l | clear the console                                           |
