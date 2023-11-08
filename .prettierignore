@@ -1,3 +1,7 @@
 .all-contributorsrc
 coverage*/
 lib/
+dist/
+build/
+node_modules/
+pnpm-lock.yaml

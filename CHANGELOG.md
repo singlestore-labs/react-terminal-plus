@@ -1,3 +1,11 @@
+## 0.0.16 (TBD)
+
+### Internal
+
+- Setup `prettier`, `husky` and `lint-staged` to format the code on commit
+- Setup `pnpm` to manage the dependencies
+- Setup all the OS related docs
+
 ## 0.0.15 (13th October 2023)
 
 ### Fixes
