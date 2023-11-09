@@ -1,0 +1,13 @@
+#terminalContainer {
+	height: 100%;
+}
+
+.terminal {
+	height: 100%;
+	width: 100%;
+	margin: auto;
+
+	&--rounded {
+		border-radius: 5px;
+	}
+}

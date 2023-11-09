@@ -1,0 +1,142 @@
+.editor {
+	text-align: left;
+	height: 100%;
+	padding: 10px 15px;
+	overflow-wrap: break-word;
+	overflow-y: scroll;
+	outline: none;
+	font-family: "Source Code Pro", monospace;
+	font-size: 18px;
+	line-height: 22px;
+
+	&--rounded {
+		border-radius: 5px;
+	}
+
+	// prevents style effects on copy/paste
+	caret-color: transparent;
+	&::selection {
+		background: transparent;
+	}
+
+	--scroll-bar-thumb-color: transparent;
+	--scroll-bar-track-color: transparent;
+	--scroll-bar-width: 10px;
+
+	&:focus,
+	&:hover {
+		--scroll-bar-thumb-color: rgb(211 211 211 / 40%);
+	}
+
+	// Chrome, Edge, Safari, Opera
+	&::-webkit-scrollbar {
+		width: var(--scroll-bar-width);
+	}
+
+	&::-webkit-scrollbar-track {
+		background-color: var(--scroll-bar-track-color);
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: var(--scroll-bar-thumb-color);
+	}
+
+	// Firefox
+	scrollbar-color: var(--scroll-bar-thumb-color) var(--scroll-bar-track-color);
+	scrollbar-width: var(--scroll-bar-width);
+
+	.lineText {
+		display: inline;
+		position: relative;
+		top: -1px;
+		margin-left: 8px;
+	}
+
+	.preWhiteSpace {
+		white-space: pre-wrap;
+
+		&:focus-visible {
+			outline: none;
+		}
+	}
+
+	.charUnderCaret {
+		z-index: 10;
+		position: relative;
+	}
+
+	.caret {
+		position: relative;
+		// -webkit-animation: blink 0.75s ease-in-out infinite;
+		// -moz-animation: blink 0.75s ease-in-out infinite;
+		// -o-animation: blink 0.75s ease-in-out infinite;
+		// -ms-animation: blink 0.75s ease-in-out infinite;
+		// animation: blink 0.75s ease-in-out infinite;
+
+		.caretAfter {
+			content: "";
+			position: absolute;
+			top: 2px;
+			width: 10px;
+			height: 22px;
+			z-index: 10;
+		}
+
+		@-moz-keyframes blink {
+			0% {
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+			}
+			100% {
+				opacity: 1;
+				-ms-filter: none;
+				filter: none;
+			}
+		}
+		@-webkit-keyframes blink {
+			0% {
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+			}
+			100% {
+				opacity: 1;
+				-ms-filter: none;
+				filter: none;
+			}
+		}
+		@-o-keyframes blink {
+			0% {
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+			}
+			100% {
+				opacity: 1;
+				-ms-filter: none;
+				filter: none;
+			}
+		}
+		@keyframes blink {
+			0% {
+				opacity: 0;
+				-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+				filter: alpha(opacity=0);
+			}
+			100% {
+				opacity: 1;
+				-ms-filter: none;
+				filter: none;
+			}
+		}
+	}
+
+	a {
+		color: #1a87b5;
+	}
+}
+
+.editorWithTopBar {
+	height: calc(100% - 46px);
+}

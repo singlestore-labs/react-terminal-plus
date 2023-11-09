@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"jsx": "react",
+		"esModuleInterop": true,
+		"module": "ES2022",
+		"moduleResolution": "NodeNext",
+		"noEmit": true,
+		"outDir": "lib",
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"target": "ES2022",
+		"baseUrl": ".",
+		"paths": {
+			"react-terminal-plus-local": ["../src/index.tsx"]
+		}
+	},
+	"include": ["src", "vite.config.ts"]
+}

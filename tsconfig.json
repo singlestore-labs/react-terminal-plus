@@ -1,0 +1,16 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"declarationDir": "./dist",
+		"module": "es6",
+		"noImplicitAny": false,
+		"outDir": "./dist",
+		"target": "ES2016",
+		"jsx": "react",
+		"moduleResolution": "node",
+		"esModuleInterop": true
+	},
+	"files": ["src/global.d.tsx"],
+	"include": ["src/", "vite.config.ts"],
+	"exclude": ["node_modules"]
+}
