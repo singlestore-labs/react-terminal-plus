@@ -1,8 +1,14 @@
-## 0.0.16 (TBD)
+## 0.0.17 (25th January 2024)
+
+### Internal
+
+- Remove "pre-install" script from "package.json" to avoid problems with consumers
+
+## 0.0.16 (25th January 2024)
 
 ### Fixes
 
-- change the local storage's length limit to the browser's maximum
+- Change the local storage's length limit to the browser's maximum
 
 ### Internal
 
