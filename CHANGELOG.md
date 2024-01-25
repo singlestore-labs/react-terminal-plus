@@ -1,5 +1,9 @@
 ## 0.0.16 (TBD)
 
+### Fixes
+
+- change the local storage's length limit to the browser's maximum
+
 ### Internal
 
 - Setup `prettier`, `husky` and `lint-staged` to format the code on commit

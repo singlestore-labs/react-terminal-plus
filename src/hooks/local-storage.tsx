@@ -1,4 +1,5 @@
-const CHROME_LOCAL_STORAGE_KEY_LIMIT = 20;
+// this is chrome's limit for local storage for a given key
+const CHROME_LOCAL_STORAGE_KEY_LIMIT = 5200000;
 
 const localStorageSchema = {
 	COMMAND_HISTORY: "react-terminal-plus-commandHistory",

@@ -317,10 +317,13 @@ describe("ReactTerminal", () => {
 			</TerminalContextProvider>,
 		);
 
-		writeInTerminal("first");
+		const firstCommand = "first1111111111111111111111111111111111111111111111";
+		const secondCommand = "second222222222222222222222222222222222";
+
+		writeInTerminal(firstCommand);
 		writeInTerminal("Enter");
 
-		writeInTerminal("second");
+		writeInTerminal(secondCommand);
 		writeInTerminal("Enter");
 
 		cy.mount(
@@ -330,9 +333,9 @@ describe("ReactTerminal", () => {
 		);
 
 		writeInTerminal("ArrowUp");
-		cy.findByText("second");
+		cy.findByText(secondCommand);
 		writeInTerminal("ArrowUp");
-		cy.findByText("first");
+		cy.findByText(firstCommand);
 
 		cy.mount(
 			<TerminalContextProvider useLocalStorage={false}>
