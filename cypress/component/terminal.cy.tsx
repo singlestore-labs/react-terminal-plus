@@ -365,6 +365,55 @@ describe("ReactTerminal", () => {
 				cy.wrap($element).should("have.css", "color", dark.themeBGColor);
 			});
 	});
+
+	it("should move the caret to the start if ctrl + a is pressed", () => {
+		cy.mount(
+			<TerminalContextProvider>
+				<ReactTerminal />
+			</TerminalContextProvider>,
+		);
+
+		writeInTerminal("db.connection.find({");
+		writeInTerminal("a", true);
+
+		// check the caret is at the start
+		cy.get('[class*="charUnderCaret"]').should("have.text", "d");
+
+		writeInTerminal("res = ");
+		writeInTerminal("a", true);
+		// check the caret is at the start again
+		cy.get('[class*="charUnderCaret"]').should("have.text", "r");
+
+		// move the caret to the right and then press ctrl + a
+		writeInTerminal("ArrowRight");
+		writeInTerminal("ArrowRight");
+		writeInTerminal("a", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "r");
+	});
+
+	it("should move the caret to the end if ctrl + e is pressed", () => {
+		cy.mount(
+			<TerminalContextProvider>
+				<ReactTerminal />
+			</TerminalContextProvider>,
+		);
+
+		writeInTerminal("db.connection.find({");
+		writeInTerminal("ArrowLeft");
+		writeInTerminal("ArrowLeft");
+		writeInTerminal("ArrowLeft");
+		cy.get('[class*="charUnderCaret"]').should("have.text", "d");
+
+		writeInTerminal("e", true);
+		// check the caret is at the end
+		cy.get('[class*="charUnderCaret"]').should("have.text", "");
+
+		// check ctrl + e works with ctrl + a
+		writeInTerminal("a", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "d");
+		writeInTerminal("e", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "");
+	});
 });
 
 function writeText(

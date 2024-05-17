@@ -29,6 +29,8 @@ type TerminalActions =
 	| { type: "ARROW_LEFT" }
 	| { type: "ARROW_RIGHT" }
 	| { type: "RESET_CARET_POSITION" }
+	| { type: "MOVE_CARET_TO_START" }
+	| { type: "MOVE_CARET_TO_END" }
 	| { type: "UPDATE_BUFFERED_CONTENT"; payload: React.ReactNode };
 
 type TerminalContextState = {
@@ -264,6 +266,22 @@ function terminalReducer(
 						caretPosition: newCaretPosition,
 						textAfterCaret: newCaretTextAfter,
 						textBeforeCaret: newCaretTextBefore,
+					};
+				}
+				case "MOVE_CARET_TO_START": {
+					return {
+						...state,
+						caretPosition: 0,
+						textAfterCaret: state.editorInput,
+						textBeforeCaret: "",
+					};
+				}
+				case "MOVE_CARET_TO_END": {
+					return {
+						...state,
+						caretPosition: state.editorInput.length,
+						textAfterCaret: "",
+						textBeforeCaret: state.editorInput,
 					};
 				}
 				default: {
