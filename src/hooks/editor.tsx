@@ -196,6 +196,16 @@ export const useEditorInput = ({
 				} else {
 					cancelCommand();
 				}
+			} else if (
+				(event.metaKey || event.ctrlKey) &&
+				eventKey.toLowerCase() == "a"
+			) {
+				send({ type: "MOVE_CARET_TO_START" });
+			} else if (
+				(event.metaKey || event.ctrlKey) &&
+				eventKey.toLowerCase() == "e"
+			) {
+				send({ type: "MOVE_CARET_TO_END" });
 			} else {
 				if (eventKey && eventKey.length === 1) {
 					send({ type: "TYPE", text: eventKey });

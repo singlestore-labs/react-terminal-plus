@@ -112,6 +112,8 @@ The component comes with few in-built themes: `light`, `dark`, `material-light`,
 | ctrl + c | copy OR cancel running command if there is no selected text |
 | ctrl + v | paste                                                       |
 | ctrl + l | clear the console                                           |
+| ctrl + a | moves the cursor to the beginning of the line               |
+| ctrl + e | moves the cursor to the end of the line                     |
 
 ## Development
 
