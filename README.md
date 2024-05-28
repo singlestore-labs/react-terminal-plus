@@ -107,13 +107,17 @@ The component comes with few in-built themes: `light`, `dark`, `material-light`,
 
 ## In-built shortcuts
 
-| shortcut | description                                                 |
-| -------- | ----------------------------------------------------------- |
-| ctrl + c | copy OR cancel running command if there is no selected text |
-| ctrl + v | paste                                                       |
-| ctrl + l | clear the console                                           |
-| ctrl + a | moves the cursor to the beginning of the line               |
-| ctrl + e | moves the cursor to the end of the line                     |
+| shortcut           | description                                                 |
+| ------------------ | ----------------------------------------------------------- |
+| ctrl + c           | copy OR cancel running command if there is no selected text |
+| ctrl + v           | paste                                                       |
+| ctrl + l           | clear the console                                           |
+| ctrl + a           | moves the cursor to the beginning of the line               |
+| ctrl + e           | moves the cursor to the end of the line                     |
+| Home               | moves the cursor to the beginning of the line               |
+| End                | moves the cursor to the end of the line                     |
+| ctrl + left-arrow  | moves the cursor to the backward word                       |
+| ctrl + right-arrow | moves the cursor to the forward word                        |
 
 ## Development
 

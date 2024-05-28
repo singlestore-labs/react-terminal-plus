@@ -31,6 +31,8 @@ type TerminalActions =
 	| { type: "RESET_CARET_POSITION" }
 	| { type: "MOVE_CARET_TO_START" }
 	| { type: "MOVE_CARET_TO_END" }
+	| { type: "FORWARD_WORD" }
+	| { type: "BACKWARD_WORD" }
 	| { type: "UPDATE_BUFFERED_CONTENT"; payload: React.ReactNode };
 
 type TerminalContextState = {
@@ -268,6 +270,26 @@ function terminalReducer(
 						textBeforeCaret: newCaretTextBefore,
 					};
 				}
+				case "FORWARD_WORD": {
+					const [newCaretTextBefore, newCaretTextAfter] =
+						moveCaretForwardByOneWord(state.editorInput, state.caretPosition);
+					return {
+						...state,
+						caretPosition: newCaretTextBefore.length,
+						textAfterCaret: newCaretTextAfter,
+						textBeforeCaret: newCaretTextBefore,
+					};
+				}
+				case "BACKWARD_WORD": {
+					const [newCaretTextBefore, newCaretTextAfter] =
+						moveCaretBackwardByOneWord(state.editorInput, state.caretPosition);
+					return {
+						...state,
+						caretPosition: newCaretTextBefore.length,
+						textAfterCaret: newCaretTextAfter,
+						textBeforeCaret: newCaretTextBefore,
+					};
+				}
 				case "MOVE_CARET_TO_START": {
 					return {
 						...state,
@@ -293,6 +315,28 @@ function terminalReducer(
 			return state;
 		}
 	}
+}
+
+function moveCaretForwardByOneWord(
+	newEditorInput: string,
+	newCaretPosition: number,
+) {
+	const [caretTextBefore, caretTextAfter] = Utils.splitStringAtNextSpace(
+		newEditorInput,
+		newCaretPosition,
+	);
+	return [caretTextBefore, caretTextAfter];
+}
+
+function moveCaretBackwardByOneWord(
+	newEditorInput: string,
+	newCaretPosition: number,
+) {
+	const [caretTextBefore, caretTextAfter] = Utils.splitStringAtPreviousSpace(
+		newEditorInput,
+		newCaretPosition,
+	);
+	return [caretTextBefore, caretTextAfter];
 }
 
 function caretTextBeforeUpdate(state: TerminalState) {
