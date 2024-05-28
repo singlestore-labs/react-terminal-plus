@@ -414,6 +414,107 @@ describe("ReactTerminal", () => {
 		writeInTerminal("e", true);
 		cy.get('[class*="charUnderCaret"]').should("have.text", "");
 	});
+
+	it("should move the caret to the start if Home is pressed", () => {
+		cy.mount(
+			<TerminalContextProvider>
+				<ReactTerminal />
+			</TerminalContextProvider>,
+		);
+
+		writeInTerminal("db.connection.find({");
+		writeInTerminal("Home");
+
+		// check the caret is at the start
+		cy.get('[class*="charUnderCaret"]').should("have.text", "d");
+
+		writeInTerminal("res = ");
+		writeInTerminal("Home");
+		// check the caret is at the start again
+		cy.get('[class*="charUnderCaret"]').should("have.text", "r");
+
+		// move the caret to the right and then press Home
+		writeInTerminal("ArrowRight");
+		writeInTerminal("ArrowRight");
+		writeInTerminal("Home");
+		cy.get('[class*="charUnderCaret"]').should("have.text", "r");
+	});
+
+	it("should move the caret to the end if End is pressed", () => {
+		cy.mount(
+			<TerminalContextProvider>
+				<ReactTerminal />
+			</TerminalContextProvider>,
+		);
+
+		writeInTerminal("db.connection.find({");
+		writeInTerminal("ArrowLeft");
+		writeInTerminal("ArrowLeft");
+		writeInTerminal("ArrowLeft");
+		cy.get('[class*="charUnderCaret"]').should("have.text", "d");
+
+		writeInTerminal("End");
+		// check the caret is at the end
+		cy.get('[class*="charUnderCaret"]').should("have.text", "");
+
+		// check End works with Home
+		writeInTerminal("Home");
+		cy.get('[class*="charUnderCaret"]').should("have.text", "d");
+		writeInTerminal("End");
+		cy.get('[class*="charUnderCaret"]').should("have.text", "");
+	});
+
+	it("should move the caret to the backward word if ctrl + < is pressed", () => {
+		cy.mount(
+			<TerminalContextProvider>
+				<ReactTerminal />
+			</TerminalContextProvider>,
+		);
+
+		writeInTerminal("is singlestore kai");
+		writeInTerminal("ArrowLeft", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "k");
+
+		writeInTerminal("ArrowLeft", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "s");
+
+		writeInTerminal("ArrowLeft", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "i");
+
+		writeInTerminal("this ");
+		writeInTerminal("ArrowLeft", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "t");
+	});
+
+	it("should move the caret to the forward word if ctrl + > is pressed", () => {
+		cy.mount(
+			<TerminalContextProvider>
+				<ReactTerminal />
+			</TerminalContextProvider>,
+		);
+
+		writeInTerminal("this is singlestore kai");
+
+		// move the caret to the start
+		writeInTerminal("a", true);
+		writeInTerminal("ArrowRight", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "i");
+
+		writeInTerminal("ArrowRight", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "s");
+
+		writeInTerminal("ArrowRight", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "k");
+
+		writeInTerminal("not");
+		writeInTerminal("ArrowRight", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "");
+
+		// try with ctrl + <
+		writeInTerminal("ArrowLeft", true);
+		writeInTerminal("ArrowRight", true);
+		cy.get('[class*="charUnderCaret"]').should("have.text", "");
+	});
 });
 
 function writeText(
@@ -431,6 +532,8 @@ function writeText(
 			"ArrowLeft",
 			"ArrowRight",
 			"Tab",
+			"Home",
+			"End",
 		].includes(value)
 	) {
 		container.trigger("keydown", {

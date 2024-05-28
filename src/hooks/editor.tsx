@@ -162,6 +162,10 @@ export const useEditorInput = ({
 				} else {
 					send({ type: "RESET_CARET_POSITION" });
 				}
+			} else if ((event.metaKey || event.ctrlKey) && eventKey === "ArrowLeft") {
+				send({ type: "BACKWARD_WORD" });
+			} else if ((event.metaKey || event.ctrlKey) && eventKey == "ArrowRight") {
+				send({ type: "FORWARD_WORD" });
 			} else if (eventKey === "ArrowLeft") {
 				if (store.caretPosition > 0) {
 					send({ type: "ARROW_LEFT" });
@@ -197,13 +201,13 @@ export const useEditorInput = ({
 					cancelCommand();
 				}
 			} else if (
-				(event.metaKey || event.ctrlKey) &&
-				eventKey.toLowerCase() == "a"
+				((event.metaKey || event.ctrlKey) && eventKey.toLowerCase() == "a") ||
+				eventKey === "Home"
 			) {
 				send({ type: "MOVE_CARET_TO_START" });
 			} else if (
-				(event.metaKey || event.ctrlKey) &&
-				eventKey.toLowerCase() == "e"
+				((event.metaKey || event.ctrlKey) && eventKey.toLowerCase() == "e") ||
+				eventKey === "End"
 			) {
 				send({ type: "MOVE_CARET_TO_END" });
 			} else {
