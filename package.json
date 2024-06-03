@@ -86,6 +86,6 @@
 		"node": ">=18"
 	},
 	"np": {
-		"tests": true
+		"tests": false
 	}
 }
