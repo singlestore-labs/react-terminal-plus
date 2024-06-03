@@ -1,3 +1,10 @@
+## 0.0.18 (3rd June 2024)
+
+### Feature
+
+- Add `End` | `Home` | `CTRL + A` | `CTRL + E` shortcuts to move the caret to the end/start of the line
+- Add `CTRL + RIGHT_ARROW` | `CTRL + LEFT_ARROW` shortcuts to move the caret to the next/previous word
+
 ## 0.0.17 (25th January 2024)
 
 ### Internal
