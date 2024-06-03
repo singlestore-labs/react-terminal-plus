@@ -464,7 +464,7 @@ describe("ReactTerminal", () => {
 		cy.get('[class*="charUnderCaret"]').should("have.text", "");
 	});
 
-	it("should move the caret to the backward word if ctrl + < is pressed", () => {
+	it("should move the caret to the backward word if ctrl + ArrowLeft is pressed", () => {
 		cy.mount(
 			<TerminalContextProvider>
 				<ReactTerminal />
@@ -486,7 +486,7 @@ describe("ReactTerminal", () => {
 		cy.get('[class*="charUnderCaret"]').should("have.text", "t");
 	});
 
-	it("should move the caret to the forward word if ctrl + > is pressed", () => {
+	it("should move the caret to the forward word if ctrl + ArrowRight is pressed", () => {
 		cy.mount(
 			<TerminalContextProvider>
 				<ReactTerminal />
