@@ -1,3 +1,9 @@
+## 0.0.19 (28th March 2025)
+
+### Feature
+
+- Fix bug where text selection was not visible
+
 ## 0.0.18 (3rd June 2024)
 
 ### Feature
