@@ -13,12 +13,6 @@
 		border-radius: 5px;
 	}
 
-	// prevents style effects on copy/paste
-	caret-color: transparent;
-	&::selection {
-		background: transparent;
-	}
-
 	--scroll-bar-thumb-color: transparent;
 	--scroll-bar-track-color: transparent;
 	--scroll-bar-width: 10px;
